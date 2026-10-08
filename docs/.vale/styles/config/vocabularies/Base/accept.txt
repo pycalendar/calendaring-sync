@@ -1,0 +1,12 @@
+AGPL
+autodoc
+autodoc'd
+calendaring-sync
+calendaring_sync
+chatbot
+Diataxis
+docstrings?
+hardcoding
+inlined
+parens
+repo
