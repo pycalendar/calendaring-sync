@@ -39,6 +39,7 @@ dev = [
   "coverage==7.16.2",
   "pytest-cov==7.1.0",
   "reuse==6.2.0",
+  "towncrier==26.9.0",
 ]
 docs = [
   "sphinx==9.1.0",
@@ -56,6 +57,7 @@ docs = [
 Repository = "https://github.com/pycalendar/calendaring-sync"
 Issues = "https://github.com/pycalendar/calendaring-sync/issues"
 Documentation = "https://calendaring-sync.readthedocs.io/en/latest/"
+Changelog = "https://calendaring-sync.readthedocs.io/en/latest/changelog.html"
 
 [tool.hatch.version]
 source = "vcs"
@@ -89,3 +91,56 @@ known-first-party = ["calendaring_sync"]
 
 [tool.pytest.ini_options]
 testpaths = ["src/calendaring_sync/tests"]
+
+[tool.towncrier]
+directory = "news/"
+filename = "docs/changelog.rst"
+issue_format = "`#{issue} <https://github.com/pycalendar/calendaring-sync/issues/{issue}>`_"
+start_string = ".. towncrier release notes start\n"
+title_format = "{version} ({project_date})"
+underlines = ["-", "~", "`"]
+
+[[tool.towncrier.type]]
+directory = "breaking"
+name = "Breaking changes"
+showcontent = true
+
+[[tool.towncrier.type]]
+directory = "removal"
+name = "Removals and deprecations"
+showcontent = true
+
+[[tool.towncrier.type]]
+directory = "feature"
+name = "New features"
+showcontent = true
+
+[[tool.towncrier.type]]
+directory = "bugfix"
+name = "Bug fixes"
+showcontent = true
+
+[[tool.towncrier.type]]
+directory = "documentation"
+name = "Documentation"
+showcontent = true
+
+[[tool.towncrier.type]]
+directory = "deps"
+name = "Dependency changes"
+showcontent = true
+
+[[tool.towncrier.type]]
+directory = "internal"
+name = "Internal changes"
+showcontent = true
+
+[[tool.towncrier.type]]
+directory = "chore"
+name = "Other tasks"
+showcontent = true
+
+[[tool.towncrier.type]]
+directory = "security"
+name = "Security fixes"
+showcontent = true

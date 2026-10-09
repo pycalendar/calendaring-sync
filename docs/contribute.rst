@@ -71,6 +71,33 @@ Write the PR description in your own words, as a short account of what you found
 
 Before opening a PR, run the unit tests, ``ruff check`` and ``ruff format --check``, ``mypy src/calendaring_sync --ignore-missing-imports``, and ``reuse lint``. If you touched any ``.rst`` page, also run :ref:`vale-check` and build the docs with ``sphinx-build -W -b html docs docs/_build/html``, which turns every Sphinx warning into an error so a broken cross-reference or role fails there instead of shipping. Fix everything that comes back before asking for review, rather than leaving a known-red check for the reviewer to raise.
 
+.. _change-log:
+
+Change log
+==========
+
+If your PR changes behavior, add a news fragment. CI-only and internal-refactor PRs don't need one.
+
+.. code-block:: bash
+
+    touch news/<issue-number>.<type>.rst
+
+Where ``<type>`` is one of: ``breaking``, ``removal``, ``feature``, ``bugfix``, ``documentation``, ``deps``, ``internal``, ``chore``, ``security``.
+
+Write a short, user-facing description of the change inside the file: state what changed and, if it's a fix, what happened before. The issue link is generated automatically from the filename's number, so don't add one yourself. If your PR isn't tied to an issue, prefix the filename with ``+`` instead of a number (for example ``+resync-after-invalid-token.bugfix.rst``); towncrier accepts orphan fragments this way and just omits the issue link. Fragments are collected into ``docs/changelog.rst`` at release time. Don't edit that file directly.
+
+Keep each fragment to one or two sentences. State the change; don't explain how it works internally, why it was needed, or how it was found, that belongs in the PR description, not the changelog. If your PR touches more than one distinct behavior (two separate bugs, or a feature plus an unrelated parameter addition), write one fragment per behavior (``11.feature.1.rst``, ``11.feature.2.rst``, and further numbered fragments as needed) instead of one fragment covering all of them. See any ``bugfix`` fragment in ``news/`` for the length and tone to aim for.
+
+If you used AI to help write the change, briefly disclose it in the fragment, per the :ref:`artificial-intelligence-policy`.
+
+To preview what the change log will look like:
+
+.. code-block:: bash
+
+    towncrier build --draft --version 0.0.0
+
+If you're unsure whether your PR needs a fragment, ask a maintainer for the ``skip-changelog`` label rather than skipping silently.
+
 .. _code-style:
 
 Code style
