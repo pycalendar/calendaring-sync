@@ -18,6 +18,10 @@ calendaring-sync keeps the state a calendar sync needs between runs: the sync to
 
 Full documentation: https://calendaring-sync.readthedocs.io/en/latest/
 
+## Changelog
+
+See the [change log](https://calendaring-sync.readthedocs.io/en/latest/changelog.html).
+
 ## Contributing
 
 See the [contributing guide](https://calendaring-sync.readthedocs.io/en/latest/contribute.html).

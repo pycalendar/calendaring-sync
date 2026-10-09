@@ -30,6 +30,14 @@ precedence = "override"
 SPDX-FileCopyrightText = "2026 calendaring-sync contributors"
 SPDX-License-Identifier = "AGPL-3.0-or-later"
 
+# Towncrier news fragments. short-lived, deleted once folded into
+# docs/changelog.rst at release time. Not worth a header each.
+[[annotations]]
+path = "news/*"
+precedence = "override"
+SPDX-FileCopyrightText = "2026 calendaring-sync contributors"
+SPDX-License-Identifier = "AGPL-3.0-or-later"
+
 # GitHub issue form templates: YAML frontmatter must stay the first thing
 # in the file for GitHub to parse it, so a leading comment isn't an option.
 [[annotations]]

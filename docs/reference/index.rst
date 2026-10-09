@@ -9,3 +9,8 @@
 
 .. automodule:: calendaring_sync
    :members:
+
+.. toctree::
+   :maxdepth: 1
+
+   ../changelog
