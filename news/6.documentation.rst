@@ -1,0 +1,1 @@
+Added the sync state design, an explanation of how an adapter maps its protocol onto it, and a server compatibility reference.
