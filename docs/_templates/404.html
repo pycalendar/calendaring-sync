@@ -3,7 +3,7 @@
 {% extends "!page.html" %}
 
 {%- block htmltitle %}
-<title>{{ title|striptags|e }}{%- for parent in parents %} | {{ parent.title }}{%- endfor %}{{ titlesuffix }}</title>
+<title>{{ title|striptags|e }}{%- for parent in parents %} – {{ parent.title }}{%- endfor %}{{ titlesuffix }}</title>
 {%- endblock %}
 
 {% block body %}

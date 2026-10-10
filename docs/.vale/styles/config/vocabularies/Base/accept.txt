@@ -11,5 +11,6 @@ filename
 hardcoding
 inlined
 parens
+pytest
 repo
 towncrier

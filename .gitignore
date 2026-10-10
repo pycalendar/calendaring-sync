@@ -65,7 +65,7 @@ src/calendaring_sync/_version.py
 # uv lock file
 uv.lock
 
-# Docs build (including comparison builds under other names, for example docs/_build2)
+# Docs build (including comparison builds under other names, e.g. docs/_build2)
 docs/_build*/
 
 # Vale-synced third-party style packages (fetched by `vale sync`)

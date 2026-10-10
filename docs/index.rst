@@ -29,7 +29,7 @@ A Python library for calendar sync state: sync tokens, object versions, change t
         :link: explanation/design
         :link-type: doc
 
-        Why calendaring-sync works the way it does.
+        Why calendaring-sync is built the way it is.
 
     .. grid-item-card:: 🤝 Contribute
         :link: contribute

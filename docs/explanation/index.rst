@@ -6,9 +6,9 @@ Explanation
 ===========
 
 .. meta::
-   :description: Background and design rationale for why calendaring-sync works the way it does.
+   :description: Background and design rationale for why calendaring-sync is built the way it is.
 
-Background and design rationale: why calendaring-sync works the way it does, not how to use it. See the how-to guides for task-focused instructions instead.
+Background and design rationale: why calendaring-sync is built the way it is, not how to use it. See the how-to guides for task-focused instructions instead.
 
 .. toctree::
    :maxdepth: 1
