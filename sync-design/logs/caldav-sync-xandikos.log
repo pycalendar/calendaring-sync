@@ -1,0 +1,850 @@
+
+===== reset: DELETE calendar =====
+>>> DELETE /user/calendars/probe/
+<<< 404 Not Found
+<<< Content-Type: application/octet-stream
+<<< Path /user/calendars/probe/ not found.
+
+===== reset: MKCALENDAR =====
+>>> MKCALENDAR /user/calendars/probe/
+<<< 201 Created
+<<< Content-Type: application/octet-stream
+
+===== 1 supported-report-set =====
+>>> PROPFIND /user/calendars/probe/
+>>> Depth: 0
+>>> Content-Type: application/xml; charset=utf-8
+>>> <?xml version="1.0"?><D:propfind xmlns:D="DAV:"><D:prop><D:supported-report-set/></D:prop></D:propfind>
+<<< 207 Multi-Status
+<<< Content-Type: text/xml; charset="utf-8"
+<<< <ns0:multistatus xmlns:ns0="DAV:" xmlns:ns1="urn:ietf:params:xml:ns:caldav"><ns0:response><ns0:href>/user/calendars/probe/</ns0:href><ns0:propstat><ns0:status>HTTP/1.1 200 OK</ns0:status><ns0:prop><ns0:supported-report-set><ns0:supported-report><ns0:report><ns1:calendar-multiget /></ns0:report></ns0:supported-report><ns0:supported-report><ns0:report><ns1:calendar-query /></ns0:report></ns0:supported-report><ns0:supported-report><ns0:report><ns0:expand-property /></ns0:report></ns0:supported-report><ns0:supported-report><ns0:report><ns0:principal-property-search /></ns0:report></ns0:supported-report><ns0:supported-report><ns0:report><ns0:sync-collection /></ns0:report></ns0:supported-report><ns0:supported-report><ns0:report><ns1:free-busy-query /></ns0:report></ns0:supported-report></ns0:supported-report-set></ns0:prop></ns0:propstat></ns0:response></ns0:multistatus>
+
+===== 2a empty token, empty calendar =====
+>>> REPORT /user/calendars/probe/
+>>> Depth: 0
+>>> Content-Type: application/xml; charset=utf-8
+>>> <?xml version="1.0" encoding="utf-8"?><D:sync-collection xmlns:D="DAV:"><D:sync-token/><D:sync-level>1</D:sync-level><D:prop><D:getetag/></D:prop></D:sync-collection>
+<<< 207 Multi-Status
+<<< Content-Type: text/xml; charset="utf-8"
+<<< <ns0:multistatus xmlns:ns0="DAV:"><ns0:sync-token>ae4423fea231573dd53ab2567fdc26cd3f98a7ca</ns0:sync-token></ns0:multistatus>
+
+===== 2 create a =====
+>>> PUT /user/calendars/probe/a.ics
+>>> Content-Type: text/calendar; charset=utf-8
+>>> BEGIN:VCALENDAR
+
+>>> VERSION:2.0
+
+>>> PRODID:-//calendaring-sync evidence//EN
+
+>>> BEGIN:VEVENT
+
+>>> UID:uid-a
+
+>>> DTSTAMP:20261010T000000Z
+
+>>> DTSTART:20261020T100000Z
+
+>>> DTEND:20261020T110000Z
+
+>>> SUMMARY:a v1
+
+>>> END:VEVENT
+
+>>> END:VCALENDAR
+
+>>> 
+<<< 201 Created
+<<< ETag: "47cef4352e1625266493efa1b496e2589efc70b5"
+<<< Content-Type: application/octet-stream
+
+===== 2 create b =====
+>>> PUT /user/calendars/probe/b.ics
+>>> Content-Type: text/calendar; charset=utf-8
+>>> BEGIN:VCALENDAR
+
+>>> VERSION:2.0
+
+>>> PRODID:-//calendaring-sync evidence//EN
+
+>>> BEGIN:VEVENT
+
+>>> UID:uid-b
+
+>>> DTSTAMP:20261010T000000Z
+
+>>> DTSTART:20261020T100000Z
+
+>>> DTEND:20261020T110000Z
+
+>>> SUMMARY:b v1
+
+>>> END:VEVENT
+
+>>> END:VCALENDAR
+
+>>> 
+<<< 201 Created
+<<< ETag: "4cfde3a32bda4fd56300e07047b313729edb2ced"
+<<< Content-Type: application/octet-stream
+
+===== 2 create c =====
+>>> PUT /user/calendars/probe/c.ics
+>>> Content-Type: text/calendar; charset=utf-8
+>>> BEGIN:VCALENDAR
+
+>>> VERSION:2.0
+
+>>> PRODID:-//calendaring-sync evidence//EN
+
+>>> BEGIN:VEVENT
+
+>>> UID:uid-c
+
+>>> DTSTAMP:20261010T000000Z
+
+>>> DTSTART:20261020T100000Z
+
+>>> DTEND:20261020T110000Z
+
+>>> SUMMARY:c v1
+
+>>> END:VEVENT
+
+>>> END:VCALENDAR
+
+>>> 
+<<< 201 Created
+<<< ETag: "c3308a2c071c9e6f758a3864f44418279e8f12da"
+<<< Content-Type: application/octet-stream
+
+===== 2b empty token, three members =====
+>>> REPORT /user/calendars/probe/
+>>> Depth: 0
+>>> Content-Type: application/xml; charset=utf-8
+>>> <?xml version="1.0" encoding="utf-8"?><D:sync-collection xmlns:D="DAV:"><D:sync-token/><D:sync-level>1</D:sync-level><D:prop><D:getetag/></D:prop></D:sync-collection>
+<<< 207 Multi-Status
+<<< Content-Type: text/xml; charset="utf-8"
+<<< <ns0:multistatus xmlns:ns0="DAV:"><ns0:response><ns0:href>/user/calendars/probe/a.ics</ns0:href><ns0:propstat><ns0:status>HTTP/1.1 200 OK</ns0:status><ns0:prop><ns0:getetag>"47cef4352e1625266493efa1b496e2589efc70b5"</ns0:getetag></ns0:prop></ns0:propstat></ns0:response><ns0:response><ns0:href>/user/calendars/probe/b.ics</ns0:href><ns0:propstat><ns0:status>HTTP/1.1 200 OK</ns0:status><ns0:prop><ns0:getetag>"4cfde3a32bda4fd56300e07047b313729edb2ced"</ns0:getetag></ns0:prop></ns0:propstat></ns0:response><ns0:response><ns0:href>/user/calendars/probe/c.ics</ns0:href><ns0:propstat><ns0:status>HTTP/1.1 200 OK</ns0:status><ns0:prop><ns0:getetag>"c3308a2c071c9e6f758a3864f44418279e8f12da"</ns0:getetag></ns0:prop></ns0:propstat></ns0:response><ns0:sync-token>f1cd6be11d26cbfb092aa56f209edfb9dbb0fefd</ns0:sync-token></ns0:multistatus>
+
+===== 2 create d =====
+>>> PUT /user/calendars/probe/d.ics
+>>> Content-Type: text/calendar; charset=utf-8
+>>> BEGIN:VCALENDAR
+
+>>> VERSION:2.0
+
+>>> PRODID:-//calendaring-sync evidence//EN
+
+>>> BEGIN:VEVENT
+
+>>> UID:uid-d
+
+>>> DTSTAMP:20261010T000000Z
+
+>>> DTSTART:20261020T100000Z
+
+>>> DTEND:20261020T110000Z
+
+>>> SUMMARY:d v1
+
+>>> END:VEVENT
+
+>>> END:VCALENDAR
+
+>>> 
+<<< 201 Created
+<<< ETag: "0e032e55d59c8b1bb0f323c91275d15cea5687c9"
+<<< Content-Type: application/octet-stream
+
+===== 2 modify a =====
+>>> PUT /user/calendars/probe/a.ics
+>>> Content-Type: text/calendar; charset=utf-8
+>>> BEGIN:VCALENDAR
+
+>>> VERSION:2.0
+
+>>> PRODID:-//calendaring-sync evidence//EN
+
+>>> BEGIN:VEVENT
+
+>>> UID:uid-a
+
+>>> DTSTAMP:20261010T000000Z
+
+>>> DTSTART:20261020T100000Z
+
+>>> DTEND:20261020T110000Z
+
+>>> SUMMARY:a v2
+
+>>> END:VEVENT
+
+>>> END:VCALENDAR
+
+>>> 
+<<< 204 No Content
+<<< ETag: "25bfb4e3808f3239679d8a20f81d9eaa002141ed"
+
+===== 2 delete b =====
+>>> DELETE /user/calendars/probe/b.ics
+<<< 204 No Content
+
+===== 2c incremental after create d, modify a, delete b =====
+>>> REPORT /user/calendars/probe/
+>>> Depth: 0
+>>> Content-Type: application/xml; charset=utf-8
+>>> <?xml version="1.0" encoding="utf-8"?><D:sync-collection xmlns:D="DAV:"><D:sync-token>f1cd6be11d26cbfb092aa56f209edfb9dbb0fefd</D:sync-token><D:sync-level>1</D:sync-level><D:prop><D:getetag/></D:prop></D:sync-collection>
+<<< 207 Multi-Status
+<<< Content-Type: text/xml; charset="utf-8"
+<<< <ns0:multistatus xmlns:ns0="DAV:"><ns0:response><ns0:href>/user/calendars/probe/a.ics</ns0:href><ns0:propstat><ns0:status>HTTP/1.1 200 OK</ns0:status><ns0:prop><ns0:getetag>"25bfb4e3808f3239679d8a20f81d9eaa002141ed"</ns0:getetag></ns0:prop></ns0:propstat></ns0:response><ns0:response><ns0:href>/user/calendars/probe/d.ics</ns0:href><ns0:propstat><ns0:status>HTTP/1.1 200 OK</ns0:status><ns0:prop><ns0:getetag>"0e032e55d59c8b1bb0f323c91275d15cea5687c9"</ns0:getetag></ns0:prop></ns0:propstat></ns0:response><ns0:response><ns0:href>/user/calendars/probe/b.ics</ns0:href><ns0:status>HTTP/1.1 404 Not Found</ns0:status></ns0:response><ns0:sync-token>faffb1b381afc3855d1c690b9714b35b417e7c78</ns0:sync-token></ns0:multistatus>
+
+===== 3 create e =====
+>>> PUT /user/calendars/probe/e.ics
+>>> Content-Type: text/calendar; charset=utf-8
+>>> BEGIN:VCALENDAR
+
+>>> VERSION:2.0
+
+>>> PRODID:-//calendaring-sync evidence//EN
+
+>>> BEGIN:VEVENT
+
+>>> UID:uid-e
+
+>>> DTSTAMP:20261010T000000Z
+
+>>> DTSTART:20261020T100000Z
+
+>>> DTEND:20261020T110000Z
+
+>>> SUMMARY:e
+
+>>> END:VEVENT
+
+>>> END:VCALENDAR
+
+>>> 
+<<< 201 Created
+<<< ETag: "507547252f66054cae85c5502aba9edb159feee0"
+<<< Content-Type: application/octet-stream
+
+===== 3 delete e =====
+>>> DELETE /user/calendars/probe/e.ics
+<<< 204 No Content
+
+===== 3 report after e was created and deleted =====
+>>> REPORT /user/calendars/probe/
+>>> Depth: 0
+>>> Content-Type: application/xml; charset=utf-8
+>>> <?xml version="1.0" encoding="utf-8"?><D:sync-collection xmlns:D="DAV:"><D:sync-token>faffb1b381afc3855d1c690b9714b35b417e7c78</D:sync-token><D:sync-level>1</D:sync-level><D:prop><D:getetag/></D:prop></D:sync-collection>
+<<< 207 Multi-Status
+<<< Content-Type: text/xml; charset="utf-8"
+<<< <ns0:multistatus xmlns:ns0="DAV:"><ns0:sync-token>faffb1b381afc3855d1c690b9714b35b417e7c78</ns0:sync-token></ns0:multistatus>
+
+===== 4 delete c =====
+>>> DELETE /user/calendars/probe/c.ics
+<<< 204 No Content
+
+===== 4 re-create c =====
+>>> PUT /user/calendars/probe/c.ics
+>>> Content-Type: text/calendar; charset=utf-8
+>>> BEGIN:VCALENDAR
+
+>>> VERSION:2.0
+
+>>> PRODID:-//calendaring-sync evidence//EN
+
+>>> BEGIN:VEVENT
+
+>>> UID:uid-c
+
+>>> DTSTAMP:20261010T000000Z
+
+>>> DTSTART:20261020T100000Z
+
+>>> DTEND:20261020T110000Z
+
+>>> SUMMARY:c v2
+
+>>> END:VEVENT
+
+>>> END:VCALENDAR
+
+>>> 
+<<< 201 Created
+<<< ETag: "dba92530fa3c145e56ae5891371e6183f5ad2517"
+<<< Content-Type: application/octet-stream
+
+===== 4 report after c was deleted and re-created =====
+>>> REPORT /user/calendars/probe/
+>>> Depth: 0
+>>> Content-Type: application/xml; charset=utf-8
+>>> <?xml version="1.0" encoding="utf-8"?><D:sync-collection xmlns:D="DAV:"><D:sync-token>faffb1b381afc3855d1c690b9714b35b417e7c78</D:sync-token><D:sync-level>1</D:sync-level><D:prop><D:getetag/></D:prop></D:sync-collection>
+<<< 207 Multi-Status
+<<< Content-Type: text/xml; charset="utf-8"
+<<< <ns0:multistatus xmlns:ns0="DAV:"><ns0:response><ns0:href>/user/calendars/probe/c.ics</ns0:href><ns0:propstat><ns0:status>HTTP/1.1 200 OK</ns0:status><ns0:prop><ns0:getetag>"dba92530fa3c145e56ae5891371e6183f5ad2517"</ns0:getetag></ns0:prop></ns0:propstat></ns0:response><ns0:sync-token>508f14efd3dd3a74a0739e382e858863959e63c6</ns0:sync-token></ns0:multistatus>
+
+===== 5 token: well-formed URI =====
+>>> REPORT /user/calendars/probe/
+>>> Depth: 0
+>>> Content-Type: application/xml; charset=utf-8
+>>> <?xml version="1.0" encoding="utf-8"?><D:sync-collection xmlns:D="DAV:"><D:sync-token>http://example.invalid/never-issued</D:sync-token><D:sync-level>1</D:sync-level><D:prop><D:getetag/></D:prop></D:sync-collection>
+<<< 500 Internal Server Error
+<<< Content-Type: text/plain; charset=utf-8
+<<< 500 Internal Server Error
+<<< 
+<<< Server got itself in trouble
+
+===== 5 token: not a URI =====
+>>> REPORT /user/calendars/probe/
+>>> Depth: 0
+>>> Content-Type: application/xml; charset=utf-8
+>>> <?xml version="1.0" encoding="utf-8"?><D:sync-collection xmlns:D="DAV:"><D:sync-token>not a uri</D:sync-token><D:sync-level>1</D:sync-level><D:prop><D:getetag/></D:prop></D:sync-collection>
+<<< 500 Internal Server Error
+<<< Content-Type: text/plain; charset=utf-8
+<<< 500 Internal Server Error
+<<< 
+<<< Server got itself in trouble
+
+===== 5 token: real token with two characters replaced =====
+>>> REPORT /user/calendars/probe/
+>>> Depth: 0
+>>> Content-Type: application/xml; charset=utf-8
+>>> <?xml version="1.0" encoding="utf-8"?><D:sync-collection xmlns:D="DAV:"><D:sync-token>f1cd6be11d26cbfb092aa56f209edfb9dbb0fezz</D:sync-token><D:sync-level>1</D:sync-level><D:prop><D:getetag/></D:prop></D:sync-collection>
+<<< 500 Internal Server Error
+<<< Content-Type: text/plain; charset=utf-8
+<<< 500 Internal Server Error
+<<< 
+<<< Server got itself in trouble
+
+===== 5 token: real token with its last character changed =====
+>>> REPORT /user/calendars/probe/
+>>> Depth: 0
+>>> Content-Type: application/xml; charset=utf-8
+>>> <?xml version="1.0" encoding="utf-8"?><D:sync-collection xmlns:D="DAV:"><D:sync-token>f1cd6be11d26cbfb092aa56f209edfb9dbb0fef1</D:sync-token><D:sync-level>1</D:sync-level><D:prop><D:getetag/></D:prop></D:sync-collection>
+<<< 412 Precondition Failed
+<<< Content-Type: text/xml; encoding="utf-8"
+<<< <ns0:error xmlns:ns0="DAV:"><ns0:valid-sync-token /><ns0:responsedescription>Requested sync token f1cd6be11d26cbfb092aa56f209edfb9dbb0fef1 is invalid</ns0:responsedescription></ns0:error>
+
+===== 6 empty token after deletions =====
+>>> REPORT /user/calendars/probe/
+>>> Depth: 0
+>>> Content-Type: application/xml; charset=utf-8
+>>> <?xml version="1.0" encoding="utf-8"?><D:sync-collection xmlns:D="DAV:"><D:sync-token/><D:sync-level>1</D:sync-level><D:prop><D:getetag/></D:prop></D:sync-collection>
+<<< 207 Multi-Status
+<<< Content-Type: text/xml; charset="utf-8"
+<<< <ns0:multistatus xmlns:ns0="DAV:"><ns0:response><ns0:href>/user/calendars/probe/a.ics</ns0:href><ns0:propstat><ns0:status>HTTP/1.1 200 OK</ns0:status><ns0:prop><ns0:getetag>"25bfb4e3808f3239679d8a20f81d9eaa002141ed"</ns0:getetag></ns0:prop></ns0:propstat></ns0:response><ns0:response><ns0:href>/user/calendars/probe/c.ics</ns0:href><ns0:propstat><ns0:status>HTTP/1.1 200 OK</ns0:status><ns0:prop><ns0:getetag>"dba92530fa3c145e56ae5891371e6183f5ad2517"</ns0:getetag></ns0:prop></ns0:propstat></ns0:response><ns0:response><ns0:href>/user/calendars/probe/d.ics</ns0:href><ns0:propstat><ns0:status>HTTP/1.1 200 OK</ns0:status><ns0:prop><ns0:getetag>"0e032e55d59c8b1bb0f323c91275d15cea5687c9"</ns0:getetag></ns0:prop></ns0:propstat></ns0:response><ns0:sync-token>508f14efd3dd3a74a0739e382e858863959e63c6</ns0:sync-token></ns0:multistatus>
+
+===== 7 page 0, nresults=2 =====
+>>> REPORT /user/calendars/probe/
+>>> Depth: 0
+>>> Content-Type: application/xml; charset=utf-8
+>>> <?xml version="1.0" encoding="utf-8"?><D:sync-collection xmlns:D="DAV:"><D:sync-token>ae4423fea231573dd53ab2567fdc26cd3f98a7ca</D:sync-token><D:sync-level>1</D:sync-level><D:limit><D:nresults>2</D:nresults></D:limit><D:prop><D:getetag/></D:prop></D:sync-collection>
+<<< 207 Multi-Status
+<<< Content-Type: text/xml; charset="utf-8"
+<<< <ns0:multistatus xmlns:ns0="DAV:"><ns0:response><ns0:href>/user/calendars/probe/a.ics</ns0:href><ns0:propstat><ns0:status>HTTP/1.1 200 OK</ns0:status><ns0:prop><ns0:getetag>"25bfb4e3808f3239679d8a20f81d9eaa002141ed"</ns0:getetag></ns0:prop></ns0:propstat></ns0:response><ns0:response><ns0:href>/user/calendars/probe/c.ics</ns0:href><ns0:propstat><ns0:status>HTTP/1.1 200 OK</ns0:status><ns0:prop><ns0:getetag>"dba92530fa3c145e56ae5891371e6183f5ad2517"</ns0:getetag></ns0:prop></ns0:propstat></ns0:response><ns0:sync-token>508f14efd3dd3a74a0739e382e858863959e63c6</ns0:sync-token></ns0:multistatus>
+
+===== 7 follow-up from the last page's token =====
+>>> REPORT /user/calendars/probe/
+>>> Depth: 0
+>>> Content-Type: application/xml; charset=utf-8
+>>> <?xml version="1.0" encoding="utf-8"?><D:sync-collection xmlns:D="DAV:"><D:sync-token>508f14efd3dd3a74a0739e382e858863959e63c6</D:sync-token><D:sync-level>1</D:sync-level><D:prop><D:getetag/></D:prop></D:sync-collection>
+<<< 207 Multi-Status
+<<< Content-Type: text/xml; charset="utf-8"
+<<< <ns0:multistatus xmlns:ns0="DAV:"><ns0:sync-token>508f14efd3dd3a74a0739e382e858863959e63c6</ns0:sync-token></ns0:multistatus>
+
+===== 7 live state =====
+>>> REPORT /user/calendars/probe/
+>>> Depth: 0
+>>> Content-Type: application/xml; charset=utf-8
+>>> <?xml version="1.0" encoding="utf-8"?><D:sync-collection xmlns:D="DAV:"><D:sync-token/><D:sync-level>1</D:sync-level><D:prop><D:getetag/></D:prop></D:sync-collection>
+<<< 207 Multi-Status
+<<< Content-Type: text/xml; charset="utf-8"
+<<< <ns0:multistatus xmlns:ns0="DAV:"><ns0:response><ns0:href>/user/calendars/probe/a.ics</ns0:href><ns0:propstat><ns0:status>HTTP/1.1 200 OK</ns0:status><ns0:prop><ns0:getetag>"25bfb4e3808f3239679d8a20f81d9eaa002141ed"</ns0:getetag></ns0:prop></ns0:propstat></ns0:response><ns0:response><ns0:href>/user/calendars/probe/c.ics</ns0:href><ns0:propstat><ns0:status>HTTP/1.1 200 OK</ns0:status><ns0:prop><ns0:getetag>"dba92530fa3c145e56ae5891371e6183f5ad2517"</ns0:getetag></ns0:prop></ns0:propstat></ns0:response><ns0:response><ns0:href>/user/calendars/probe/d.ics</ns0:href><ns0:propstat><ns0:status>HTTP/1.1 200 OK</ns0:status><ns0:prop><ns0:getetag>"0e032e55d59c8b1bb0f323c91275d15cea5687c9"</ns0:getetag></ns0:prop></ns0:propstat></ns0:response><ns0:sync-token>508f14efd3dd3a74a0739e382e858863959e63c6</ns0:sync-token></ns0:multistatus>
+
+===== 8 GET a =====
+>>> GET /user/calendars/probe/a.ics
+<<< 200 OK
+<<< ETag: "25bfb4e3808f3239679d8a20f81d9eaa002141ed"
+<<< Content-Type: text/calendar
+<<< BEGIN:VCALENDAR
+
+<<< VERSION:2.0
+
+<<< PRODID:-//calendaring-sync evidence//EN
+
+<<< BEGIN:VEVENT
+
+<<< SUMMARY:a v2
+
+<<< DTSTART:20261020T100000Z
+
+<<< DTEND:20261020T110000Z
+
+<<< DTSTAMP:20261010T000000Z
+
+<<< UID:uid-a
+
+<<< END:VEVENT
+
+<<< END:VCALENDAR
+
+===== 8 PUT a's stored content back unchanged =====
+>>> PUT /user/calendars/probe/a.ics
+>>> Content-Type: text/calendar; charset=utf-8
+>>> BEGIN:VCALENDAR
+
+>>> VERSION:2.0
+
+>>> PRODID:-//calendaring-sync evidence//EN
+
+>>> BEGIN:VEVENT
+
+>>> SUMMARY:a v2
+
+>>> DTSTART:20261020T100000Z
+
+>>> DTEND:20261020T110000Z
+
+>>> DTSTAMP:20261010T000000Z
+
+>>> UID:uid-a
+
+>>> END:VEVENT
+
+>>> END:VCALENDAR
+
+>>> 
+<<< 204 No Content
+<<< ETag: "25bfb4e3808f3239679d8a20f81d9eaa002141ed"
+
+===== 8 PUT without DTSTAMP =====
+>>> PUT /user/calendars/probe/f.ics
+>>> Content-Type: text/calendar; charset=utf-8
+>>> BEGIN:VCALENDAR
+
+>>> VERSION:2.0
+
+>>> PRODID:-//calendaring-sync evidence//EN
+
+>>> BEGIN:VEVENT
+
+>>> UID:uid-f
+
+>>> DTSTART:20261020T100000Z
+
+>>> DTEND:20261020T110000Z
+
+>>> SUMMARY:no DTSTAMP
+
+>>> END:VEVENT
+
+>>> END:VCALENDAR
+
+>>> 
+<<< 201 Created
+<<< ETag: "359615af7997190f5b65eac3cf6080a4d35d96e4"
+<<< Content-Type: application/octet-stream
+
+===== 8 GET f =====
+>>> GET /user/calendars/probe/f.ics
+<<< 200 OK
+<<< ETag: "359615af7997190f5b65eac3cf6080a4d35d96e4"
+<<< Content-Type: text/calendar
+<<< BEGIN:VCALENDAR
+
+<<< VERSION:2.0
+
+<<< PRODID:-//calendaring-sync evidence//EN
+
+<<< BEGIN:VEVENT
+
+<<< SUMMARY:no DTSTAMP
+
+<<< DTSTART:20261020T100000Z
+
+<<< DTEND:20261020T110000Z
+
+<<< UID:uid-f
+
+<<< END:VEVENT
+
+<<< END:VCALENDAR
+
+===== 9 PUT If-Match wrong =====
+>>> PUT /user/calendars/probe/a.ics
+>>> Content-Type: text/calendar; charset=utf-8
+>>> If-Match: "wrong"
+>>> BEGIN:VCALENDAR
+
+>>> VERSION:2.0
+
+>>> PRODID:-//calendaring-sync evidence//EN
+
+>>> BEGIN:VEVENT
+
+>>> UID:uid-a
+
+>>> DTSTAMP:20261010T000000Z
+
+>>> DTSTART:20261020T100000Z
+
+>>> DTEND:20261020T110000Z
+
+>>> SUMMARY:a v3
+
+>>> END:VEVENT
+
+>>> END:VCALENDAR
+
+>>> 
+<<< 412 Precondition Failed
+<<< Content-Type: application/octet-stream
+
+===== 9 PUT If-Match right =====
+>>> PUT /user/calendars/probe/a.ics
+>>> Content-Type: text/calendar; charset=utf-8
+>>> If-Match: "25bfb4e3808f3239679d8a20f81d9eaa002141ed"
+>>> BEGIN:VCALENDAR
+
+>>> VERSION:2.0
+
+>>> PRODID:-//calendaring-sync evidence//EN
+
+>>> BEGIN:VEVENT
+
+>>> UID:uid-a
+
+>>> DTSTAMP:20261010T000000Z
+
+>>> DTSTART:20261020T100000Z
+
+>>> DTEND:20261020T110000Z
+
+>>> SUMMARY:a v3
+
+>>> END:VEVENT
+
+>>> END:VCALENDAR
+
+>>> 
+<<< 204 No Content
+<<< ETag: "2f28bb47f578f7cdecf83e4a3bf66ace443d7d80"
+
+===== 9 PUT If-None-Match * on existing =====
+>>> PUT /user/calendars/probe/a.ics
+>>> Content-Type: text/calendar; charset=utf-8
+>>> If-None-Match: *
+>>> BEGIN:VCALENDAR
+
+>>> VERSION:2.0
+
+>>> PRODID:-//calendaring-sync evidence//EN
+
+>>> BEGIN:VEVENT
+
+>>> UID:uid-a
+
+>>> DTSTAMP:20261010T000000Z
+
+>>> DTSTART:20261020T100000Z
+
+>>> DTEND:20261020T110000Z
+
+>>> SUMMARY:a v4
+
+>>> END:VEVENT
+
+>>> END:VCALENDAR
+
+>>> 
+<<< 412 Precondition Failed
+<<< Content-Type: application/octet-stream
+
+===== 9 PUT If-Match on missing =====
+>>> PUT /user/calendars/probe/8a56d42b-f992-4d32-b71b-90fc7dc44ca3.ics
+>>> Content-Type: text/calendar; charset=utf-8
+>>> If-Match: "x"
+>>> BEGIN:VCALENDAR
+
+>>> VERSION:2.0
+
+>>> PRODID:-//calendaring-sync evidence//EN
+
+>>> BEGIN:VEVENT
+
+>>> UID:uid-h
+
+>>> DTSTAMP:20261010T000000Z
+
+>>> DTSTART:20261020T100000Z
+
+>>> DTEND:20261020T110000Z
+
+>>> SUMMARY:h
+
+>>> END:VEVENT
+
+>>> END:VCALENDAR
+
+>>> 
+<<< 412 Precondition Failed
+<<< Content-Type: application/octet-stream
+
+===== 9 create with a UID already used =====
+>>> PUT /user/calendars/probe/g.ics
+>>> Content-Type: text/calendar; charset=utf-8
+>>> If-None-Match: *
+>>> BEGIN:VCALENDAR
+
+>>> VERSION:2.0
+
+>>> PRODID:-//calendaring-sync evidence//EN
+
+>>> BEGIN:VEVENT
+
+>>> UID:uid-a
+
+>>> DTSTAMP:20261010T000000Z
+
+>>> DTSTART:20261020T100000Z
+
+>>> DTEND:20261020T110000Z
+
+>>> SUMMARY:dup
+
+>>> END:VEVENT
+
+>>> END:VCALENDAR
+
+>>> 
+<<< 412 Precondition Failed
+<<< Content-Type: text/xml; encoding="utf-8"
+<<< <ns0:error xmlns:ns0="DAV:" xmlns:ns1="urn:ietf:params:xml:ns:caldav"><ns1:no-uid-conflict /><ns0:responsedescription>UID already in use.</ns0:responsedescription></ns0:error>
+
+===== 9 DELETE If-Match wrong =====
+>>> DELETE /user/calendars/probe/d.ics
+>>> If-Match: "wrong"
+<<< 412 Precondition Failed
+<<< Content-Type: application/octet-stream
+
+===== 9 DELETE If-Match right =====
+>>> DELETE /user/calendars/probe/d.ics
+>>> If-Match: "0e032e55d59c8b1bb0f323c91275d15cea5687c9"
+<<< 204 No Content
+
+===== 9 DELETE If-Match on gone =====
+>>> DELETE /user/calendars/probe/d.ics
+>>> If-Match: "0e032e55d59c8b1bb0f323c91275d15cea5687c9"
+<<< 404 Not Found
+<<< Content-Type: application/octet-stream
+<<< Path /user/calendars/probe/d.ics not found.
+
+===== 10 create with a UUID href =====
+>>> PUT /user/calendars/probe/f23df41d-47dc-4080-85b5-11daaf716bff.ics
+>>> Content-Type: text/calendar; charset=utf-8
+>>> If-None-Match: *
+>>> BEGIN:VCALENDAR
+
+>>> VERSION:2.0
+
+>>> PRODID:-//calendaring-sync evidence//EN
+
+>>> BEGIN:VEVENT
+
+>>> UID:f23df41d-47dc-4080-85b5-11daaf716bff.ics
+
+>>> DTSTAMP:20261010T000000Z
+
+>>> DTSTART:20261020T100000Z
+
+>>> DTEND:20261020T110000Z
+
+>>> SUMMARY:round trip
+
+>>> END:VEVENT
+
+>>> END:VCALENDAR
+
+>>> 
+<<< 201 Created
+<<< ETag: "c4c200dd3e30b3cd845226eeca38674e53cf455a"
+<<< Content-Type: application/octet-stream
+
+===== 10 report after the UUID create =====
+>>> REPORT /user/calendars/probe/
+>>> Depth: 0
+>>> Content-Type: application/xml; charset=utf-8
+>>> <?xml version="1.0" encoding="utf-8"?><D:sync-collection xmlns:D="DAV:"><D:sync-token>508f14efd3dd3a74a0739e382e858863959e63c6</D:sync-token><D:sync-level>1</D:sync-level><D:prop><D:getetag/></D:prop></D:sync-collection>
+<<< 207 Multi-Status
+<<< Content-Type: text/xml; charset="utf-8"
+<<< <ns0:multistatus xmlns:ns0="DAV:"><ns0:response><ns0:href>/user/calendars/probe/a.ics</ns0:href><ns0:propstat><ns0:status>HTTP/1.1 200 OK</ns0:status><ns0:prop><ns0:getetag>"2f28bb47f578f7cdecf83e4a3bf66ace443d7d80"</ns0:getetag></ns0:prop></ns0:propstat></ns0:response><ns0:response><ns0:href>/user/calendars/probe/f.ics</ns0:href><ns0:propstat><ns0:status>HTTP/1.1 200 OK</ns0:status><ns0:prop><ns0:getetag>"359615af7997190f5b65eac3cf6080a4d35d96e4"</ns0:getetag></ns0:prop></ns0:propstat></ns0:response><ns0:response><ns0:href>/user/calendars/probe/f23df41d-47dc-4080-85b5-11daaf716bff.ics</ns0:href><ns0:propstat><ns0:status>HTTP/1.1 200 OK</ns0:status><ns0:prop><ns0:getetag>"c4c200dd3e30b3cd845226eeca38674e53cf455a"</ns0:getetag></ns0:prop></ns0:propstat></ns0:response><ns0:response><ns0:href>/user/calendars/probe/d.ics</ns0:href><ns0:status>HTTP/1.1 404 Not Found</ns0:status></ns0:response><ns0:sync-token>91f3f8a6f5a688993ebf7606c7cc48574659c0a0</ns0:sync-token></ns0:multistatus>
+
+===== 11 create keep =====
+>>> PUT /user/calendars/probe/keep.ics
+>>> Content-Type: text/calendar; charset=utf-8
+>>> BEGIN:VCALENDAR
+
+>>> VERSION:2.0
+
+>>> PRODID:-//calendaring-sync evidence//EN
+
+>>> BEGIN:VEVENT
+
+>>> UID:keep
+
+>>> DTSTAMP:20261010T000000Z
+
+>>> DTSTART:20261020T100000Z
+
+>>> DTEND:20261020T110000Z
+
+>>> SUMMARY:v1
+
+>>> END:VEVENT
+
+>>> END:VCALENDAR
+
+>>> 
+<<< 201 Created
+<<< ETag: "6f1819c3210370a095052b48dafa11848759edbb"
+<<< Content-Type: application/octet-stream
+
+===== 11 create gone =====
+>>> PUT /user/calendars/probe/gone.ics
+>>> Content-Type: text/calendar; charset=utf-8
+>>> BEGIN:VCALENDAR
+
+>>> VERSION:2.0
+
+>>> PRODID:-//calendaring-sync evidence//EN
+
+>>> BEGIN:VEVENT
+
+>>> UID:gone
+
+>>> DTSTAMP:20261010T000000Z
+
+>>> DTSTART:20261020T100000Z
+
+>>> DTEND:20261020T110000Z
+
+>>> SUMMARY:v1
+
+>>> END:VEVENT
+
+>>> END:VCALENDAR
+
+>>> 
+<<< 201 Created
+<<< ETag: "82bc2557037923cbb694473a4838585f7d5a4282"
+<<< Content-Type: application/octet-stream
+
+===== 11 report =====
+>>> REPORT /user/calendars/probe/
+>>> Depth: 0
+>>> Content-Type: application/xml; charset=utf-8
+>>> <?xml version="1.0" encoding="utf-8"?><D:sync-collection xmlns:D="DAV:"><D:sync-token>91f3f8a6f5a688993ebf7606c7cc48574659c0a0</D:sync-token><D:sync-level>1</D:sync-level><D:prop><D:getetag/></D:prop></D:sync-collection>
+<<< 207 Multi-Status
+<<< Content-Type: text/xml; charset="utf-8"
+<<< <ns0:multistatus xmlns:ns0="DAV:"><ns0:response><ns0:href>/user/calendars/probe/gone.ics</ns0:href><ns0:propstat><ns0:status>HTTP/1.1 200 OK</ns0:status><ns0:prop><ns0:getetag>"82bc2557037923cbb694473a4838585f7d5a4282"</ns0:getetag></ns0:prop></ns0:propstat></ns0:response><ns0:response><ns0:href>/user/calendars/probe/keep.ics</ns0:href><ns0:propstat><ns0:status>HTTP/1.1 200 OK</ns0:status><ns0:prop><ns0:getetag>"6f1819c3210370a095052b48dafa11848759edbb"</ns0:getetag></ns0:prop></ns0:propstat></ns0:response><ns0:sync-token>ba78e30fd2b57b59ac7bd66467ca914c4046fb85</ns0:sync-token></ns0:multistatus>
+
+===== 11 change keep after the report =====
+>>> PUT /user/calendars/probe/keep.ics
+>>> Content-Type: text/calendar; charset=utf-8
+>>> BEGIN:VCALENDAR
+
+>>> VERSION:2.0
+
+>>> PRODID:-//calendaring-sync evidence//EN
+
+>>> BEGIN:VEVENT
+
+>>> UID:keep
+
+>>> DTSTAMP:20261010T000000Z
+
+>>> DTSTART:20261020T100000Z
+
+>>> DTEND:20261020T110000Z
+
+>>> SUMMARY:v2 changed after the report
+
+>>> END:VEVENT
+
+>>> END:VCALENDAR
+
+>>> 
+<<< 204 No Content
+<<< ETag: "04ffa664e281e1f6ea1eb3bba14d5e096d0709cc"
+
+===== 11 delete gone after the report =====
+>>> DELETE /user/calendars/probe/gone.ics
+<<< 204 No Content
+
+===== 11 calendar-multiget, no Depth header =====
+>>> REPORT /user/calendars/probe/
+>>> Content-Type: application/xml; charset=utf-8
+>>> <?xml version="1.0" encoding="utf-8"?><C:calendar-multiget xmlns:D="DAV:" xmlns:C="urn:ietf:params:xml:ns:caldav"><D:prop><D:getetag/><C:calendar-data/></D:prop><D:href>/user/calendars/probe/keep.ics</D:href><D:href>/user/calendars/probe/gone.ics</D:href></C:calendar-multiget>
+<<< 207 Multi-Status
+<<< Content-Type: text/xml; charset="utf-8"
+<<< <ns0:multistatus xmlns:ns0="DAV:" xmlns:ns1="urn:ietf:params:xml:ns:caldav"><ns0:response><ns0:href>/user/calendars/probe/keep.ics</ns0:href><ns0:propstat><ns0:status>HTTP/1.1 200 OK</ns0:status><ns0:prop><ns0:getetag>"04ffa664e281e1f6ea1eb3bba14d5e096d0709cc"</ns0:getetag><ns1:calendar-data>BEGIN:VCALENDAR
+
+<<< VERSION:2.0
+
+<<< PRODID:-//calendaring-sync evidence//EN
+
+<<< BEGIN:VEVENT
+
+<<< SUMMARY:v2 changed after the report
+
+<<< DTSTART:20261020T100000Z
+
+<<< DTEND:20261020T110000Z
+
+<<< DTSTAMP:20261010T000000Z
+
+<<< UID:keep
+
+<<< END:VEVENT
+
+<<< END:VCALENDAR
+
+<<< </ns1:calendar-data></ns0:prop></ns0:propstat></ns0:response><ns0:response><ns0:href>/user/calendars/probe/gone.ics</ns0:href><ns0:status>HTTP/1.1 404 Not Found</ns0:status></ns0:response></ns0:multistatus>
+
+===== 11 next report =====
+>>> REPORT /user/calendars/probe/
+>>> Depth: 0
+>>> Content-Type: application/xml; charset=utf-8
+>>> <?xml version="1.0" encoding="utf-8"?><D:sync-collection xmlns:D="DAV:"><D:sync-token>ba78e30fd2b57b59ac7bd66467ca914c4046fb85</D:sync-token><D:sync-level>1</D:sync-level><D:prop><D:getetag/></D:prop></D:sync-collection>
+<<< 207 Multi-Status
+<<< Content-Type: text/xml; charset="utf-8"
+<<< <ns0:multistatus xmlns:ns0="DAV:"><ns0:response><ns0:href>/user/calendars/probe/keep.ics</ns0:href><ns0:propstat><ns0:status>HTTP/1.1 200 OK</ns0:status><ns0:prop><ns0:getetag>"04ffa664e281e1f6ea1eb3bba14d5e096d0709cc"</ns0:getetag></ns0:prop></ns0:propstat></ns0:response><ns0:response><ns0:href>/user/calendars/probe/gone.ics</ns0:href><ns0:status>HTTP/1.1 404 Not Found</ns0:status></ns0:response><ns0:sync-token>30357674f76b5f5c529544cba791ae4e7746db55</ns0:sync-token></ns0:multistatus>
+
+RESULT [Xandikos] 1 sync-collection in supported-report-set: True; ['calendar-multiget', 'calendar-query', 'expand-property', 'free-busy-query', 'principal-property-search', 'sync-collection']
+RESULT [Xandikos] 2 initial listing: [('a.ics', '200'), ('b.ics', '200'), ('c.ics', '200')]
+RESULT [Xandikos] 2 incremental: [('a.ics', '200'), ('d.ics', '200'), ('b.ics', '404')]
+RESULT [Xandikos] 3 created and deleted between reports: []: not reported
+RESULT [Xandikos] 4 deleted and re-created: entries for c.ics: ['200']
+RESULT [Xandikos] 5 token well-formed URI: 500, valid-sync-token: False, members []
+RESULT [Xandikos] 5 token not a URI: 500, valid-sync-token: False, members []
+RESULT [Xandikos] 5 token real token with two characters replaced: 500, valid-sync-token: False, members []
+RESULT [Xandikos] 5 token real token with its last character changed: 412, valid-sync-token: True, members []
+RESULT [Xandikos] 6 empty token after deletions: removed members listed: []; collection listed: False
+RESULT [Xandikos] 7 DAV:limit: 507 sent: False; pages 1; paged + follow-up equals live: False; missing ['d.ics']
+RESULT [Xandikos] 8 identical PUT: ETag unchanged: True
+RESULT [Xandikos] 8 PUT stored differently: stored equals sent: False; ETag in the PUT answer: "359615af7997190f5b65eac3cf6080a4d35d96e4"
+RESULT [Xandikos] 9 PUT If-Match wrong: 412
+RESULT [Xandikos] 9 PUT If-Match right: 204
+RESULT [Xandikos] 9 PUT If-None-Match * on existing: 412
+RESULT [Xandikos] 9 PUT If-Match on missing: 412
+RESULT [Xandikos] 9 duplicate UID: 412, element ['no-uid-conflict']
+RESULT [Xandikos] 9 DELETE If-Match wrong: 412
+RESULT [Xandikos] 9 DELETE If-Match right: 204
+RESULT [Xandikos] 9 DELETE If-Match on gone: 404
+RESULT [Xandikos] PASS 10 unreserved href round-trips in the sync report: ok
+RESULT [Xandikos] PASS 11 multiget is 207: 207
+RESULT [Xandikos] PASS 11 multiget returns the newer ETag with the newer content: report-time "6f1819c3210370a095052b48dafa11848759edbb", fetched "04ffa664e281e1f6ea1eb3bba14d5e096d0709cc", live "04ffa664e281e1f6ea1eb3bba14d5e096d0709cc"
+RESULT [Xandikos] 11 multiget for a member deleted after the report: entry with status ['404']
+RESULT [Xandikos] PASS 11 the removal arrives in the next report: ok

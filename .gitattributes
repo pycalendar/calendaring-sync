@@ -1,0 +1,5 @@
+# SPDX-FileCopyrightText: 2026 calendaring-sync contributors
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+# iCalendar requires CRLF line endings (RFC 5545 section 3.1); keep fixtures byte for byte.
+*.ics -text

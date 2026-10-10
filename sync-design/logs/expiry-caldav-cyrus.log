@@ -1,0 +1,266 @@
+
+===== create calendar =====
+>>> MKCALENDAR /dav/calendars/user/user1/expiry/
+<<< 201 Created
+
+===== create known =====
+>>> PUT /dav/calendars/user/user1/expiry/known.ics
+>>> Content-Type: text/calendar; charset=utf-8
+>>> BEGIN:VCALENDAR
+
+>>> VERSION:2.0
+
+>>> PRODID:-//calendaring-sync evidence//EN
+
+>>> BEGIN:VEVENT
+
+>>> UID:known
+
+>>> DTSTAMP:20261010T000000Z
+
+>>> DTSTART:20261020T100000Z
+
+>>> DTEND:20261020T110000Z
+
+>>> SUMMARY:v1
+
+>>> END:VEVENT
+
+>>> END:VCALENDAR
+
+>>> 
+<<< 201 Created
+<<< ETag: "a805bf36cde40fa72df009ace48d4c305fb52cdf"
+
+===== create edited =====
+>>> PUT /dav/calendars/user/user1/expiry/edited.ics
+>>> Content-Type: text/calendar; charset=utf-8
+>>> BEGIN:VCALENDAR
+
+>>> VERSION:2.0
+
+>>> PRODID:-//calendaring-sync evidence//EN
+
+>>> BEGIN:VEVENT
+
+>>> UID:edited
+
+>>> DTSTAMP:20261010T000000Z
+
+>>> DTSTART:20261020T100000Z
+
+>>> DTEND:20261020T110000Z
+
+>>> SUMMARY:v1
+
+>>> END:VEVENT
+
+>>> END:VCALENDAR
+
+>>> 
+<<< 201 Created
+<<< ETag: "0f9a34500e8bb653ad3ce8928967b182e4be001e"
+
+===== full sync =====
+>>> REPORT /dav/calendars/user/user1/expiry/
+>>> Depth: 0
+>>> Content-Type: application/xml; charset=utf-8
+>>> <?xml version="1.0" encoding="utf-8"?><D:sync-collection xmlns:D="DAV:"><D:sync-token/><D:sync-level>1</D:sync-level><D:prop><D:getetag/></D:prop></D:sync-collection>
+<<< 207 Multi-Status
+<<< Content-Type: application/xml; charset=utf-8
+<<< <?xml version="1.0" encoding="utf-8"?>
+<<< <D:multistatus xmlns:D="DAV:">
+<<<   <D:response>
+<<<     <D:href>/dav/calendars/user/user1/expiry/known.ics</D:href>
+<<<     <D:propstat>
+<<<       <D:prop>
+<<<         <D:getetag>"a805bf36cde40fa72df009ace48d4c305fb52cdf"</D:getetag>
+<<<       </D:prop>
+<<<       <D:status>HTTP/1.1 200 OK</D:status>
+<<<     </D:propstat>
+<<<   </D:response>
+<<<   <D:response>
+<<<     <D:href>/dav/calendars/user/user1/expiry/edited.ics</D:href>
+<<<     <D:propstat>
+<<<       <D:prop>
+<<<         <D:getetag>"0f9a34500e8bb653ad3ce8928967b182e4be001e"</D:getetag>
+<<<       </D:prop>
+<<<       <D:status>HTTP/1.1 200 OK</D:status>
+<<<     </D:propstat>
+<<<   </D:response>
+<<<   <D:sync-token>data:,1791613479-115</D:sync-token>
+<<< </D:multistatus>
+
+===== delete known =====
+>>> DELETE /dav/calendars/user/user1/expiry/known.ics
+<<< 204 No Content
+
+===== edit edited =====
+>>> PUT /dav/calendars/user/user1/expiry/edited.ics
+>>> Content-Type: text/calendar; charset=utf-8
+>>> BEGIN:VCALENDAR
+
+>>> VERSION:2.0
+
+>>> PRODID:-//calendaring-sync evidence//EN
+
+>>> BEGIN:VEVENT
+
+>>> UID:edited
+
+>>> DTSTAMP:20261010T000000Z
+
+>>> DTSTART:20261020T100000Z
+
+>>> DTEND:20261020T110000Z
+
+>>> SUMMARY:v2
+
+>>> END:VEVENT
+
+>>> END:VCALENDAR
+
+>>> 
+<<< 204 No Content
+<<< ETag: "b1fdbd84d872216ed394a598fbb196ff82f873e2"
+
+===== create later0 =====
+>>> PUT /dav/calendars/user/user1/expiry/later0.ics
+>>> Content-Type: text/calendar; charset=utf-8
+>>> BEGIN:VCALENDAR
+
+>>> VERSION:2.0
+
+>>> PRODID:-//calendaring-sync evidence//EN
+
+>>> BEGIN:VEVENT
+
+>>> UID:later0
+
+>>> DTSTAMP:20261010T000000Z
+
+>>> DTSTART:20261020T100000Z
+
+>>> DTEND:20261020T110000Z
+
+>>> SUMMARY:x
+
+>>> END:VEVENT
+
+>>> END:VCALENDAR
+
+>>> 
+<<< 201 Created
+<<< ETag: "dd277efc3574c3edc6e5fcb153076f950106f1d5"
+
+===== create later1 =====
+>>> PUT /dav/calendars/user/user1/expiry/later1.ics
+>>> Content-Type: text/calendar; charset=utf-8
+>>> BEGIN:VCALENDAR
+
+>>> VERSION:2.0
+
+>>> PRODID:-//calendaring-sync evidence//EN
+
+>>> BEGIN:VEVENT
+
+>>> UID:later1
+
+>>> DTSTAMP:20261010T000000Z
+
+>>> DTSTART:20261020T100000Z
+
+>>> DTEND:20261020T110000Z
+
+>>> SUMMARY:x
+
+>>> END:VEVENT
+
+>>> END:VCALENDAR
+
+>>> 
+<<< 201 Created
+<<< ETag: "745a3b9eaa53de7fe0bde2817addebbe60f0eb06"
+
+===== create later2 =====
+>>> PUT /dav/calendars/user/user1/expiry/later2.ics
+>>> Content-Type: text/calendar; charset=utf-8
+>>> BEGIN:VCALENDAR
+
+>>> VERSION:2.0
+
+>>> PRODID:-//calendaring-sync evidence//EN
+
+>>> BEGIN:VEVENT
+
+>>> UID:later2
+
+>>> DTSTAMP:20261010T000000Z
+
+>>> DTSTART:20261020T100000Z
+
+>>> DTEND:20261020T110000Z
+
+>>> SUMMARY:x
+
+>>> END:VEVENT
+
+>>> END:VCALENDAR
+
+>>> 
+<<< 201 Created
+<<< ETag: "b80ef211958aa19e40d3e7e9b8d1ee77fc94d6ea"
+
+===== incremental from the saved token, before expiry =====
+>>> REPORT /dav/calendars/user/user1/expiry/
+>>> Depth: 0
+>>> Content-Type: application/xml; charset=utf-8
+>>> <?xml version="1.0" encoding="utf-8"?><D:sync-collection xmlns:D="DAV:"><D:sync-token>data:,1791613479-115</D:sync-token><D:sync-level>1</D:sync-level><D:prop><D:getetag/></D:prop></D:sync-collection>
+<<< 207 Multi-Status
+<<< Content-Type: application/xml; charset=utf-8
+<<< <?xml version="1.0" encoding="utf-8"?>
+<<< <D:multistatus xmlns:D="DAV:">
+<<<   <D:response>
+<<<     <D:href>/dav/calendars/user/user1/expiry/known.ics</D:href>
+<<<     <D:status>HTTP/1.1 404 Not Found</D:status>
+<<<   </D:response>
+<<<   <D:response>
+<<<     <D:href>/dav/calendars/user/user1/expiry/edited.ics</D:href>
+<<<     <D:propstat>
+<<<       <D:prop>
+<<<         <D:getetag>"b1fdbd84d872216ed394a598fbb196ff82f873e2"</D:getetag>
+<<<       </D:prop>
+<<<       <D:status>HTTP/1.1 200 OK</D:status>
+<<<     </D:propstat>
+<<<   </D:response>
+<<<   <D:response>
+<<<     <D:href>/dav/calendars/user/user1/expiry/later0.ics</D:href>
+<<<     <D:propstat>
+<<<       <D:prop>
+<<<         <D:getetag>"dd277efc3574c3edc6e5fcb153076f950106f1d5"</D:getetag>
+<<<       </D:prop>
+<<<       <D:status>HTTP/1.1 200 OK</D:status>
+<<<     </D:propstat>
+<<<   </D:response>
+<<<   <D:response>
+<<<     <D:href>/dav/calendars/user/user1/expiry/later1.ics</D:href>
+<<<     <D:propstat>
+<<<       <D:prop>
+<<<         <D:getetag>"745a3b9eaa53de7fe0bde2817addebbe60f0eb06"</D:getetag>
+<<<       </D:prop>
+<<<       <D:status>HTTP/1.1 200 OK</D:status>
+<<<     </D:propstat>
+<<<   </D:response>
+<<<   <D:response>
+<<<     <D:href>/dav/calendars/user/user1/expiry/later2.ics</D:href>
+<<<     <D:propstat>
+<<<       <D:prop>
+<<<         <D:getetag>"b80ef211958aa19e40d3e7e9b8d1ee77fc94d6ea"</D:getetag>
+<<<       </D:prop>
+<<<       <D:status>HTTP/1.1 200 OK</D:status>
+<<<     </D:propstat>
+<<<   </D:response>
+<<<   <D:sync-token>data:,1791613479-124</D:sync-token>
+<<< </D:multistatus>
+
+RESULT [Cyrus] before expiry, incremental from the saved token: [('known.ics', '404'), ('edited.ics', '200'), ('later0.ics', '200'), ('later1.ics', '200'), ('later2.ics', '200')]

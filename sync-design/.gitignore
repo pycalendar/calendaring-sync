@@ -1,0 +1,7 @@
+# SPDX-FileCopyrightText: 2026 calendaring-sync contributors
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+# RFC and draft texts probes/cite_check.py downloads on first use
+/cache/
+# Server storage, tokens and state files from a run.sh run; logs/ is the committed output
+/data/

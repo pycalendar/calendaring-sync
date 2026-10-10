@@ -1,0 +1,8 @@
+
+RESULT [Baikal] python-caldav version: 3.4.0
+RESULT [Baikal] unknown token, get_objects_by_sync_token(disable_fallback=True): raised AuthorizationError {'url': 'http://127.0.0.1:8811/dav.php/calendars/test/client/', 'reason': 'Forbidden'}
+RESULT [Baikal] unknown token, DAVClient.report(): raised AuthorizationError {'url': 'http://127.0.0.1:8811/dav.php/calendars/test/client/', 'reason': 'Forbidden'}
+RESULT [Baikal] unknown token, default fallback: returned ('fake-d41d8cd98f00b204e9800998ecf8427e', 0)
+RESULT [Baikal] a removed member as returned: (href, getetag, data is None): [('client-removed.ics', None, True)]
+RESULT [Baikal] DAV:limit 1 through DAVClient.report(): status 207, 507 present: False, token http://sabre.io/ns/sync/6
+RESULT [Baikal] calendar-multiget through DAVClient.report(depth=None), no Depth header: status 207, entries 2 for 2 hrefs

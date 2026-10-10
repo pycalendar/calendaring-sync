@@ -1,0 +1,5 @@
+image sha256:1a901125d121a3e414cda87c617bd322c57ae86b9d2aedbff7b3a7ac84bb23aa version 0.10.1
+http://127.0.0.1:8811/admin/install/ 200 ok
+http://127.0.0.1:8811/admin/install/ 200 ok
+http://127.0.0.1:8811/admin/?/users/new/1/ 200 ok
+calendar home: 207

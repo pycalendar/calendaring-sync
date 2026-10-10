@@ -1,0 +1,380 @@
+Creating <data>\xandikos\user
+Create calendar in <data>\xandikos\user\calendars\calendar.
+Create addressbook in <data>\xandikos\user\contacts\addressbook.
+Create inbox in <data>\xandikos\user\inbox.
+Create outbox in <data>\xandikos\user\outbox.
+xandikos 0.4.8, dulwich 1.2.17, vobject 0.9.9, icalendar 7.3.0, aiohttp 3.14.4, defusedxml 0.7.1
+Listening on 127.0.0.1:8090
+qrcode package not installed; QR code generation disabled
+127.0.0.1 [10/Oct/2026:11:52:54 +0530] "GET / HTTP/1.1" 200 997 "-" "curl/8.4.0"
+127.0.0.1 [10/Oct/2026:11:52:54 +0530] "MKCALENDAR /user/calendars/client/ HTTP/1.1" 201 170 "-" "curl/8.4.0"
+127.0.0.1 [10/Oct/2026:11:52:55 +0530] "DELETE /user/calendars/probe/ HTTP/1.1" 404 216 "-" "python-requests/2.34.2"
+127.0.0.1 [10/Oct/2026:11:52:55 +0530] "MKCALENDAR /user/calendars/probe/ HTTP/1.1" 201 170 "-" "python-requests/2.34.2"
+127.0.0.1 [10/Oct/2026:11:52:55 +0530] "PROPFIND /user/calendars/probe/ HTTP/1.1" 207 1042 "-" "python-requests/2.34.2"
+127.0.0.1 [10/Oct/2026:11:52:55 +0530] "REPORT /user/calendars/probe/ HTTP/1.1" 207 289 "-" "python-requests/2.34.2"
+127.0.0.1 [10/Oct/2026:11:52:55 +0530] "PUT /user/calendars/probe/a.ics HTTP/1.1" 201 302 "-" "python-requests/2.34.2"
+127.0.0.1 [10/Oct/2026:11:52:55 +0530] "PUT /user/calendars/probe/b.ics HTTP/1.1" 201 302 "-" "python-requests/2.34.2"
+127.0.0.1 [10/Oct/2026:11:52:55 +0530] "PUT /user/calendars/probe/c.ics HTTP/1.1" 201 302 "-" "python-requests/2.34.2"
+127.0.0.1 [10/Oct/2026:11:52:55 +0530] "REPORT /user/calendars/probe/ HTTP/1.1" 207 997 "-" "python-requests/2.34.2"
+127.0.0.1 [10/Oct/2026:11:52:55 +0530] "PUT /user/calendars/probe/d.ics HTTP/1.1" 201 302 "-" "python-requests/2.34.2"
+127.0.0.1 [10/Oct/2026:11:52:55 +0530] "PUT /user/calendars/probe/a.ics HTTP/1.1" 204 232 "-" "python-requests/2.34.2"
+127.0.0.1 [10/Oct/2026:11:52:55 +0530] "DELETE /user/calendars/probe/b.ics HTTP/1.1" 204 100 "-" "python-requests/2.34.2"
+127.0.0.1 [10/Oct/2026:11:52:55 +0530] "REPORT /user/calendars/probe/ HTTP/1.1" 207 885 "-" "python-requests/2.34.2"
+127.0.0.1 [10/Oct/2026:11:52:55 +0530] "PUT /user/calendars/probe/e.ics HTTP/1.1" 201 302 "-" "python-requests/2.34.2"
+127.0.0.1 [10/Oct/2026:11:52:55 +0530] "DELETE /user/calendars/probe/e.ics HTTP/1.1" 204 100 "-" "python-requests/2.34.2"
+127.0.0.1 [10/Oct/2026:11:52:55 +0530] "REPORT /user/calendars/probe/ HTTP/1.1" 207 289 "-" "python-requests/2.34.2"
+127.0.0.1 [10/Oct/2026:11:52:55 +0530] "DELETE /user/calendars/probe/c.ics HTTP/1.1" 204 100 "-" "python-requests/2.34.2"
+127.0.0.1 [10/Oct/2026:11:52:55 +0530] "PUT /user/calendars/probe/c.ics HTTP/1.1" 201 302 "-" "python-requests/2.34.2"
+127.0.0.1 [10/Oct/2026:11:52:55 +0530] "REPORT /user/calendars/probe/ HTTP/1.1" 207 525 "-" "python-requests/2.34.2"
+Error handling request from 127.0.0.1
+Traceback (most recent call last):
+  File "<site-packages>\aiohttp\web_protocol.py", line 577, in _handle_request
+    resp = await request_handler(request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<site-packages>\aiohttp\web_app.py", line 563, in _handle
+    return await handler(request)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "<site-packages>\xandikos\web.py", line 3255, in xandikos_handler
+    return await main_app.aiohttp_handler(request, options.route_prefix)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<site-packages>\xandikos\webdav.py", line 3917, in aiohttp_handler
+    response = await self._handle_request(request, environ)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<site-packages>\xandikos\web.py", line 2718, in _handle_request
+    return await super()._handle_request(request, environ)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<site-packages>\xandikos\webdav.py", line 3868, in _handle_request
+    return await do.handle(request, environ, self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<site-packages>\xandikos\webdav.py", line 3186, in handle
+    return await reporter.report(
+           ^^^^^^^^^^^^^^^^^^^^^^
+    ...<13 lines>...
+    )
+    ^
+  File "<site-packages>\xandikos\webdav.py", line 513, in wrapper
+    async for resp in req_fn(self, environ, *args, **kwargs):
+        responses.append(resp)
+  File "<site-packages>\xandikos\sync.py", line 121, in report
+    for name, old_resource, new_resource in diff_iter:
+                                            ^^^^^^^^^
+  File "<site-packages>\xandikos\web.py", line 648, in iter_differences_since
+    ) in self.store.iter_changes(old_token, new_token):
+         ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "<site-packages>\xandikos\store\git.py", line 704, in iter_changes
+    for (name, content_type, etag) in self.iter_with_etag(old_ctag)
+                                      ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "<site-packages>\xandikos\store\git.py", line 536, in iter_with_etag
+    for name, mode, sha in self._iterblobs(ctag):
+                           ~~~~~~~~~~~~~~~^^^^^^
+  File "<site-packages>\xandikos\store\git.py", line 1091, in _iterblobs
+    tree = self.repo.object_store[ctag.encode("ascii")]
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "<site-packages>\dulwich\object_store.py", line 548, in __getitem__
+    type_num, uncomp = self.get_raw(sha1)
+                       ~~~~~~~~~~~~^^^^^^
+  File "<site-packages>\dulwich\object_store.py", line 2718, in get_raw
+    raise AssertionError(f"Invalid object name {name!r}")
+AssertionError: Invalid object name b'http://example.invalid/never-issued'
+127.0.0.1 [10/Oct/2026:11:52:55 +0530] "REPORT /user/calendars/probe/ HTTP/1.1" 500 246 "-" "python-requests/2.34.2"
+Error handling request from 127.0.0.1
+Traceback (most recent call last):
+  File "<site-packages>\aiohttp\web_protocol.py", line 577, in _handle_request
+    resp = await request_handler(request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<site-packages>\aiohttp\web_app.py", line 563, in _handle
+    return await handler(request)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "<site-packages>\xandikos\web.py", line 3255, in xandikos_handler
+    return await main_app.aiohttp_handler(request, options.route_prefix)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<site-packages>\xandikos\webdav.py", line 3917, in aiohttp_handler
+    response = await self._handle_request(request, environ)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<site-packages>\xandikos\web.py", line 2718, in _handle_request
+    return await super()._handle_request(request, environ)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<site-packages>\xandikos\webdav.py", line 3868, in _handle_request
+    return await do.handle(request, environ, self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<site-packages>\xandikos\webdav.py", line 3186, in handle
+    return await reporter.report(
+           ^^^^^^^^^^^^^^^^^^^^^^
+    ...<13 lines>...
+    )
+    ^
+  File "<site-packages>\xandikos\webdav.py", line 513, in wrapper
+    async for resp in req_fn(self, environ, *args, **kwargs):
+        responses.append(resp)
+  File "<site-packages>\xandikos\sync.py", line 121, in report
+    for name, old_resource, new_resource in diff_iter:
+                                            ^^^^^^^^^
+  File "<site-packages>\xandikos\web.py", line 648, in iter_differences_since
+    ) in self.store.iter_changes(old_token, new_token):
+         ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "<site-packages>\xandikos\store\git.py", line 704, in iter_changes
+    for (name, content_type, etag) in self.iter_with_etag(old_ctag)
+                                      ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "<site-packages>\xandikos\store\git.py", line 536, in iter_with_etag
+    for name, mode, sha in self._iterblobs(ctag):
+                           ~~~~~~~~~~~~~~~^^^^^^
+  File "<site-packages>\xandikos\store\git.py", line 1091, in _iterblobs
+    tree = self.repo.object_store[ctag.encode("ascii")]
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "<site-packages>\dulwich\object_store.py", line 548, in __getitem__
+    type_num, uncomp = self.get_raw(sha1)
+                       ~~~~~~~~~~~~^^^^^^
+  File "<site-packages>\dulwich\object_store.py", line 2718, in get_raw
+    raise AssertionError(f"Invalid object name {name!r}")
+AssertionError: Invalid object name b'not a uri'
+127.0.0.1 [10/Oct/2026:11:52:55 +0530] "REPORT /user/calendars/probe/ HTTP/1.1" 500 246 "-" "python-requests/2.34.2"
+Error handling request from 127.0.0.1
+Traceback (most recent call last):
+  File "<site-packages>\aiohttp\web_protocol.py", line 577, in _handle_request
+    resp = await request_handler(request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<site-packages>\aiohttp\web_app.py", line 563, in _handle
+    return await handler(request)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "<site-packages>\xandikos\web.py", line 3255, in xandikos_handler
+    return await main_app.aiohttp_handler(request, options.route_prefix)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<site-packages>\xandikos\webdav.py", line 3917, in aiohttp_handler
+    response = await self._handle_request(request, environ)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<site-packages>\xandikos\web.py", line 2718, in _handle_request
+    return await super()._handle_request(request, environ)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<site-packages>\xandikos\webdav.py", line 3868, in _handle_request
+    return await do.handle(request, environ, self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<site-packages>\xandikos\webdav.py", line 3186, in handle
+    return await reporter.report(
+           ^^^^^^^^^^^^^^^^^^^^^^
+    ...<13 lines>...
+    )
+    ^
+  File "<site-packages>\xandikos\webdav.py", line 513, in wrapper
+    async for resp in req_fn(self, environ, *args, **kwargs):
+        responses.append(resp)
+  File "<site-packages>\xandikos\sync.py", line 121, in report
+    for name, old_resource, new_resource in diff_iter:
+                                            ^^^^^^^^^
+  File "<site-packages>\xandikos\web.py", line 648, in iter_differences_since
+    ) in self.store.iter_changes(old_token, new_token):
+         ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "<site-packages>\xandikos\store\git.py", line 704, in iter_changes
+    for (name, content_type, etag) in self.iter_with_etag(old_ctag)
+                                      ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "<site-packages>\xandikos\store\git.py", line 536, in iter_with_etag
+    for name, mode, sha in self._iterblobs(ctag):
+                           ~~~~~~~~~~~~~~~^^^^^^
+  File "<site-packages>\xandikos\store\git.py", line 1091, in _iterblobs
+    tree = self.repo.object_store[ctag.encode("ascii")]
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "<site-packages>\dulwich\object_store.py", line 548, in __getitem__
+    type_num, uncomp = self.get_raw(sha1)
+                       ~~~~~~~~~~~~^^^^^^
+  File "<site-packages>\dulwich\object_store.py", line 2712, in get_raw
+    sha = hex_to_sha(cast(ObjectID, name))
+  File "<site-packages>\dulwich\objects.py", line 220, in hex_to_sha
+    return RawObjectID(binascii.unhexlify(hex))
+                       ~~~~~~~~~~~~~~~~~~^^^^^
+binascii.Error: Non-hexadecimal digit found
+127.0.0.1 [10/Oct/2026:11:52:55 +0530] "REPORT /user/calendars/probe/ HTTP/1.1" 500 246 "-" "python-requests/2.34.2"
+127.0.0.1 [10/Oct/2026:11:52:55 +0530] "REPORT /user/calendars/probe/ HTTP/1.1" 412 359 "-" "python-requests/2.34.2"
+127.0.0.1 [10/Oct/2026:11:52:55 +0530] "REPORT /user/calendars/probe/ HTTP/1.1" 207 997 "-" "python-requests/2.34.2"
+127.0.0.1 [10/Oct/2026:11:52:55 +0530] "REPORT /user/calendars/probe/ HTTP/1.1" 207 761 "-" "python-requests/2.34.2"
+127.0.0.1 [10/Oct/2026:11:52:55 +0530] "REPORT /user/calendars/probe/ HTTP/1.1" 207 289 "-" "python-requests/2.34.2"
+127.0.0.1 [10/Oct/2026:11:52:55 +0530] "REPORT /user/calendars/probe/ HTTP/1.1" 207 997 "-" "python-requests/2.34.2"
+127.0.0.1 [10/Oct/2026:11:52:55 +0530] "GET /user/calendars/probe/a.ics HTTP/1.1" 200 487 "-" "python-requests/2.34.2"
+127.0.0.1 [10/Oct/2026:11:52:55 +0530] "PUT /user/calendars/probe/a.ics HTTP/1.1" 204 232 "-" "python-requests/2.34.2"
+127.0.0.1 [10/Oct/2026:11:52:55 +0530] "PROPFIND /user/calendars/probe/a.ics HTTP/1.1" 207 452 "-" "python-requests/2.34.2"
+127.0.0.1 [10/Oct/2026:11:52:55 +0530] "PUT /user/calendars/probe/f.ics HTTP/1.1" 201 302 "-" "python-requests/2.34.2"
+127.0.0.1 [10/Oct/2026:11:52:55 +0530] "GET /user/calendars/probe/f.ics HTTP/1.1" 200 467 "-" "python-requests/2.34.2"
+127.0.0.1 [10/Oct/2026:11:52:55 +0530] "PROPFIND /user/calendars/probe/a.ics HTTP/1.1" 207 452 "-" "python-requests/2.34.2"
+127.0.0.1 [10/Oct/2026:11:52:55 +0530] "PUT /user/calendars/probe/a.ics HTTP/1.1" 412 182 "-" "python-requests/2.34.2"
+127.0.0.1 [10/Oct/2026:11:52:55 +0530] "PUT /user/calendars/probe/a.ics HTTP/1.1" 204 232 "-" "python-requests/2.34.2"
+127.0.0.1 [10/Oct/2026:11:52:55 +0530] "PUT /user/calendars/probe/a.ics HTTP/1.1" 412 182 "-" "python-requests/2.34.2"
+127.0.0.1 [10/Oct/2026:11:52:55 +0530] "PUT /user/calendars/probe/8a56d42b-f992-4d32-b71b-90fc7dc44ca3.ics HTTP/1.1" 412 182 "-" "python-requests/2.34.2"
+127.0.0.1 [10/Oct/2026:11:52:55 +0530] "PUT /user/calendars/probe/g.ics HTTP/1.1" 412 347 "-" "python-requests/2.34.2"
+127.0.0.1 [10/Oct/2026:11:52:55 +0530] "DELETE /user/calendars/probe/d.ics HTTP/1.1" 412 182 "-" "python-requests/2.34.2"
+127.0.0.1 [10/Oct/2026:11:52:55 +0530] "PROPFIND /user/calendars/probe/d.ics HTTP/1.1" 207 452 "-" "python-requests/2.34.2"
+127.0.0.1 [10/Oct/2026:11:52:55 +0530] "DELETE /user/calendars/probe/d.ics HTTP/1.1" 204 100 "-" "python-requests/2.34.2"
+127.0.0.1 [10/Oct/2026:11:52:55 +0530] "DELETE /user/calendars/probe/d.ics HTTP/1.1" 404 221 "-" "python-requests/2.34.2"
+127.0.0.1 [10/Oct/2026:11:52:55 +0530] "PUT /user/calendars/probe/f23df41d-47dc-4080-85b5-11daaf716bff.ics HTTP/1.1" 201 302 "-" "python-requests/2.34.2"
+127.0.0.1 [10/Oct/2026:11:52:55 +0530] "REPORT /user/calendars/probe/ HTTP/1.1" 207 1156 "-" "python-requests/2.34.2"
+127.0.0.1 [10/Oct/2026:11:52:55 +0530] "PUT /user/calendars/probe/keep.ics HTTP/1.1" 201 302 "-" "python-requests/2.34.2"
+127.0.0.1 [10/Oct/2026:11:52:55 +0530] "PUT /user/calendars/probe/gone.ics HTTP/1.1" 201 302 "-" "python-requests/2.34.2"
+127.0.0.1 [10/Oct/2026:11:52:55 +0530] "REPORT /user/calendars/probe/ HTTP/1.1" 207 767 "-" "python-requests/2.34.2"
+127.0.0.1 [10/Oct/2026:11:52:55 +0530] "PROPFIND /user/calendars/probe/keep.ics HTTP/1.1" 207 455 "-" "python-requests/2.34.2"
+127.0.0.1 [10/Oct/2026:11:52:55 +0530] "PUT /user/calendars/probe/keep.ics HTTP/1.1" 204 232 "-" "python-requests/2.34.2"
+127.0.0.1 [10/Oct/2026:11:52:56 +0530] "DELETE /user/calendars/probe/gone.ics HTTP/1.1" 204 100 "-" "python-requests/2.34.2"
+127.0.0.1 [10/Oct/2026:11:52:56 +0530] "PROPFIND /user/calendars/probe/keep.ics HTTP/1.1" 207 455 "-" "python-requests/2.34.2"
+127.0.0.1 [10/Oct/2026:11:52:56 +0530] "REPORT /user/calendars/probe/ HTTP/1.1" 207 898 "-" "python-requests/2.34.2"
+127.0.0.1 [10/Oct/2026:11:52:56 +0530] "REPORT /user/calendars/probe/ HTTP/1.1" 207 655 "-" "python-requests/2.34.2"
+Error handling request from 127.0.0.1
+Traceback (most recent call last):
+  File "<site-packages>\aiohttp\web_protocol.py", line 577, in _handle_request
+    resp = await request_handler(request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<site-packages>\aiohttp\web_app.py", line 563, in _handle
+    return await handler(request)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "<site-packages>\xandikos\web.py", line 3255, in xandikos_handler
+    return await main_app.aiohttp_handler(request, options.route_prefix)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<site-packages>\xandikos\webdav.py", line 3917, in aiohttp_handler
+    response = await self._handle_request(request, environ)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<site-packages>\xandikos\web.py", line 2718, in _handle_request
+    return await super()._handle_request(request, environ)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<site-packages>\xandikos\webdav.py", line 3868, in _handle_request
+    return await do.handle(request, environ, self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<site-packages>\xandikos\webdav.py", line 3186, in handle
+    return await reporter.report(
+           ^^^^^^^^^^^^^^^^^^^^^^
+    ...<13 lines>...
+    )
+    ^
+  File "<site-packages>\xandikos\webdav.py", line 513, in wrapper
+    async for resp in req_fn(self, environ, *args, **kwargs):
+        responses.append(resp)
+  File "<site-packages>\xandikos\sync.py", line 121, in report
+    for name, old_resource, new_resource in diff_iter:
+                                            ^^^^^^^^^
+  File "<site-packages>\xandikos\web.py", line 648, in iter_differences_since
+    ) in self.store.iter_changes(old_token, new_token):
+         ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "<site-packages>\xandikos\store\git.py", line 704, in iter_changes
+    for (name, content_type, etag) in self.iter_with_etag(old_ctag)
+                                      ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "<site-packages>\xandikos\store\git.py", line 536, in iter_with_etag
+    for name, mode, sha in self._iterblobs(ctag):
+                           ~~~~~~~~~~~~~~~^^^^^^
+  File "<site-packages>\xandikos\store\git.py", line 1091, in _iterblobs
+    tree = self.repo.object_store[ctag.encode("ascii")]
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "<site-packages>\dulwich\object_store.py", line 548, in __getitem__
+    type_num, uncomp = self.get_raw(sha1)
+                       ~~~~~~~~~~~~^^^^^^
+  File "<site-packages>\dulwich\object_store.py", line 2718, in get_raw
+    raise AssertionError(f"Invalid object name {name!r}")
+AssertionError: Invalid object name b'http://example.invalid/never-issued'
+127.0.0.1 [10/Oct/2026:11:52:56 +0530] "REPORT /user/calendars/client/ HTTP/1.1" 500 246 "-" "python-caldav/3.4.0"
+Error handling request from 127.0.0.1
+Traceback (most recent call last):
+  File "<site-packages>\aiohttp\web_protocol.py", line 577, in _handle_request
+    resp = await request_handler(request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<site-packages>\aiohttp\web_app.py", line 563, in _handle
+    return await handler(request)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "<site-packages>\xandikos\web.py", line 3255, in xandikos_handler
+    return await main_app.aiohttp_handler(request, options.route_prefix)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<site-packages>\xandikos\webdav.py", line 3917, in aiohttp_handler
+    response = await self._handle_request(request, environ)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<site-packages>\xandikos\web.py", line 2718, in _handle_request
+    return await super()._handle_request(request, environ)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<site-packages>\xandikos\webdav.py", line 3868, in _handle_request
+    return await do.handle(request, environ, self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<site-packages>\xandikos\webdav.py", line 3186, in handle
+    return await reporter.report(
+           ^^^^^^^^^^^^^^^^^^^^^^
+    ...<13 lines>...
+    )
+    ^
+  File "<site-packages>\xandikos\webdav.py", line 513, in wrapper
+    async for resp in req_fn(self, environ, *args, **kwargs):
+        responses.append(resp)
+  File "<site-packages>\xandikos\sync.py", line 121, in report
+    for name, old_resource, new_resource in diff_iter:
+                                            ^^^^^^^^^
+  File "<site-packages>\xandikos\web.py", line 648, in iter_differences_since
+    ) in self.store.iter_changes(old_token, new_token):
+         ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "<site-packages>\xandikos\store\git.py", line 704, in iter_changes
+    for (name, content_type, etag) in self.iter_with_etag(old_ctag)
+                                      ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "<site-packages>\xandikos\store\git.py", line 536, in iter_with_etag
+    for name, mode, sha in self._iterblobs(ctag):
+                           ~~~~~~~~~~~~~~~^^^^^^
+  File "<site-packages>\xandikos\store\git.py", line 1091, in _iterblobs
+    tree = self.repo.object_store[ctag.encode("ascii")]
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "<site-packages>\dulwich\object_store.py", line 548, in __getitem__
+    type_num, uncomp = self.get_raw(sha1)
+                       ~~~~~~~~~~~~^^^^^^
+  File "<site-packages>\dulwich\object_store.py", line 2718, in get_raw
+    raise AssertionError(f"Invalid object name {name!r}")
+AssertionError: Invalid object name b'http://example.invalid/never-issued'
+127.0.0.1 [10/Oct/2026:11:52:56 +0530] "REPORT /user/calendars/client/ HTTP/1.1" 500 246 "-" "python-caldav/3.4.0"
+Error handling request from 127.0.0.1
+Traceback (most recent call last):
+  File "<site-packages>\aiohttp\web_protocol.py", line 577, in _handle_request
+    resp = await request_handler(request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<site-packages>\aiohttp\web_app.py", line 563, in _handle
+    return await handler(request)
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "<site-packages>\xandikos\web.py", line 3255, in xandikos_handler
+    return await main_app.aiohttp_handler(request, options.route_prefix)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<site-packages>\xandikos\webdav.py", line 3917, in aiohttp_handler
+    response = await self._handle_request(request, environ)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<site-packages>\xandikos\web.py", line 2718, in _handle_request
+    return await super()._handle_request(request, environ)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<site-packages>\xandikos\webdav.py", line 3868, in _handle_request
+    return await do.handle(request, environ, self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<site-packages>\xandikos\webdav.py", line 3186, in handle
+    return await reporter.report(
+           ^^^^^^^^^^^^^^^^^^^^^^
+    ...<13 lines>...
+    )
+    ^
+  File "<site-packages>\xandikos\webdav.py", line 513, in wrapper
+    async for resp in req_fn(self, environ, *args, **kwargs):
+        responses.append(resp)
+  File "<site-packages>\xandikos\sync.py", line 121, in report
+    for name, old_resource, new_resource in diff_iter:
+                                            ^^^^^^^^^
+  File "<site-packages>\xandikos\web.py", line 648, in iter_differences_since
+    ) in self.store.iter_changes(old_token, new_token):
+         ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "<site-packages>\xandikos\store\git.py", line 704, in iter_changes
+    for (name, content_type, etag) in self.iter_with_etag(old_ctag)
+                                      ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "<site-packages>\xandikos\store\git.py", line 536, in iter_with_etag
+    for name, mode, sha in self._iterblobs(ctag):
+                           ~~~~~~~~~~~~~~~^^^^^^
+  File "<site-packages>\xandikos\store\git.py", line 1091, in _iterblobs
+    tree = self.repo.object_store[ctag.encode("ascii")]
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "<site-packages>\dulwich\object_store.py", line 548, in __getitem__
+    type_num, uncomp = self.get_raw(sha1)
+                       ~~~~~~~~~~~~^^^^^^
+  File "<site-packages>\dulwich\object_store.py", line 2718, in get_raw
+    raise AssertionError(f"Invalid object name {name!r}")
+AssertionError: Invalid object name b'http://example.invalid/never-issued'
+127.0.0.1 [10/Oct/2026:11:52:56 +0530] "REPORT /user/calendars/client/ HTTP/1.1" 500 246 "-" "python-caldav/3.4.0"
+127.0.0.1 [10/Oct/2026:11:52:56 +0530] "REPORT /user/calendars/client/ HTTP/1.1" 207 199 "-" "python-caldav/3.4.0"
+127.0.0.1 [10/Oct/2026:11:52:56 +0530] "REPORT /user/calendars/client/ HTTP/1.1" 207 289 "-" "python-caldav/3.4.0"
+127.0.0.1 [10/Oct/2026:11:52:56 +0530] "PUT /user/calendars/client/client-removed.ics HTTP/1.1" 201 302 "-" "python-caldav/3.4.0"
+127.0.0.1 [10/Oct/2026:11:52:56 +0530] "REPORT /user/calendars/client/ HTTP/1.1" 207 539 "-" "python-caldav/3.4.0"
+127.0.0.1 [10/Oct/2026:11:52:56 +0530] "DELETE /user/calendars/client/client-removed.ics HTTP/1.1" 204 100 "-" "python-caldav/3.4.0"
+127.0.0.1 [10/Oct/2026:11:52:56 +0530] "REPORT /user/calendars/client/ HTTP/1.1" 207 427 "-" "python-caldav/3.4.0"
+127.0.0.1 [10/Oct/2026:11:52:57 +0530] "PUT /user/calendars/client/client-0.ics HTTP/1.1" 201 302 "-" "python-caldav/3.4.0"
+127.0.0.1 [10/Oct/2026:11:52:57 +0530] "PUT /user/calendars/client/client-1.ics HTTP/1.1" 201 302 "-" "python-caldav/3.4.0"
+127.0.0.1 [10/Oct/2026:11:52:57 +0530] "PUT /user/calendars/client/client-2.ics HTTP/1.1" 201 302 "-" "python-caldav/3.4.0"
+127.0.0.1 [10/Oct/2026:11:52:57 +0530] "REPORT /user/calendars/client/ HTTP/1.1" 207 533 "-" "python-caldav/3.4.0"
+127.0.0.1 [10/Oct/2026:11:52:57 +0530] "REPORT /user/calendars/client/ HTTP/1.1" 207 1021 "-" "python-caldav/3.4.0"
+127.0.0.1 [10/Oct/2026:11:52:57 +0530] "REPORT /user/calendars/client/ HTTP/1.1" 207 1251 "-" "python-caldav/3.4.0"

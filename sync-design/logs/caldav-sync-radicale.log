@@ -1,0 +1,873 @@
+
+===== reset: DELETE calendar =====
+>>> DELETE /test/probe/
+<<< 404 Not Found
+<<< Content-Type: text/plain; charset=utf-8
+<<< The requested resource could not be found.
+
+===== reset: MKCALENDAR =====
+>>> MKCALENDAR /test/probe/
+<<< 201 Created
+
+===== 1 supported-report-set =====
+>>> PROPFIND /test/probe/
+>>> Depth: 0
+>>> Content-Type: application/xml; charset=utf-8
+>>> <?xml version="1.0"?><D:propfind xmlns:D="DAV:"><D:prop><D:supported-report-set/></D:prop></D:propfind>
+<<< 207 Multi-Status
+<<< Content-Type: text/xml; charset=utf-8
+<<< <?xml version='1.0' encoding='utf-8'?>
+<<< <multistatus xmlns="DAV:" xmlns:C="urn:ietf:params:xml:ns:caldav"><response><href>/test/probe/</href><propstat><prop><supported-report-set><supported-report><report><expand-property /></report></supported-report><supported-report><report><principal-search-property-set /></report></supported-report><supported-report><report><principal-property-search /></report></supported-report><supported-report><report><sync-collection /></report></supported-report><supported-report><report><C:calendar-multiget /></report></supported-report><supported-report><report><C:calendar-query /></report></supported-report><supported-report><report><C:free-busy-query /></report></supported-report></supported-report-set></prop><status>HTTP/1.1 200 OK</status></propstat></response></multistatus>
+
+===== 2a empty token, empty calendar =====
+>>> REPORT /test/probe/
+>>> Depth: 0
+>>> Content-Type: application/xml; charset=utf-8
+>>> <?xml version="1.0" encoding="utf-8"?><D:sync-collection xmlns:D="DAV:"><D:sync-token/><D:sync-level>1</D:sync-level><D:prop><D:getetag/></D:prop></D:sync-collection>
+<<< 207 Multi-Status
+<<< Content-Type: text/xml; charset=utf-8
+<<< <?xml version='1.0' encoding='utf-8'?>
+<<< <multistatus xmlns="DAV:"><sync-token>http://radicale.org/ns/sync/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855</sync-token></multistatus>
+
+===== 2 create a =====
+>>> PUT /test/probe/a.ics
+>>> Content-Type: text/calendar; charset=utf-8
+>>> BEGIN:VCALENDAR
+
+>>> VERSION:2.0
+
+>>> PRODID:-//calendaring-sync evidence//EN
+
+>>> BEGIN:VEVENT
+
+>>> UID:uid-a
+
+>>> DTSTAMP:20261010T000000Z
+
+>>> DTSTART:20261020T100000Z
+
+>>> DTEND:20261020T110000Z
+
+>>> SUMMARY:a v1
+
+>>> END:VEVENT
+
+>>> END:VCALENDAR
+
+>>> 
+<<< 201 Created
+<<< ETag: "fc9bd7c7003f0543aca1c390653bcc77946500d05f6e4760de3589e3f54efca8"
+
+===== 2 create b =====
+>>> PUT /test/probe/b.ics
+>>> Content-Type: text/calendar; charset=utf-8
+>>> BEGIN:VCALENDAR
+
+>>> VERSION:2.0
+
+>>> PRODID:-//calendaring-sync evidence//EN
+
+>>> BEGIN:VEVENT
+
+>>> UID:uid-b
+
+>>> DTSTAMP:20261010T000000Z
+
+>>> DTSTART:20261020T100000Z
+
+>>> DTEND:20261020T110000Z
+
+>>> SUMMARY:b v1
+
+>>> END:VEVENT
+
+>>> END:VCALENDAR
+
+>>> 
+<<< 201 Created
+<<< ETag: "f0695443e7df86b2bfbc3908ea23de6cbf858b8802d9246dc6f9e911ed77c23d"
+
+===== 2 create c =====
+>>> PUT /test/probe/c.ics
+>>> Content-Type: text/calendar; charset=utf-8
+>>> BEGIN:VCALENDAR
+
+>>> VERSION:2.0
+
+>>> PRODID:-//calendaring-sync evidence//EN
+
+>>> BEGIN:VEVENT
+
+>>> UID:uid-c
+
+>>> DTSTAMP:20261010T000000Z
+
+>>> DTSTART:20261020T100000Z
+
+>>> DTEND:20261020T110000Z
+
+>>> SUMMARY:c v1
+
+>>> END:VEVENT
+
+>>> END:VCALENDAR
+
+>>> 
+<<< 201 Created
+<<< ETag: "e8133c19cc1a81355177bf2f01bee7b1f1ee03d63cfa61d6bef08ddeed802bd3"
+
+===== 2b empty token, three members =====
+>>> REPORT /test/probe/
+>>> Depth: 0
+>>> Content-Type: application/xml; charset=utf-8
+>>> <?xml version="1.0" encoding="utf-8"?><D:sync-collection xmlns:D="DAV:"><D:sync-token/><D:sync-level>1</D:sync-level><D:prop><D:getetag/></D:prop></D:sync-collection>
+<<< 207 Multi-Status
+<<< Content-Type: text/xml; charset=utf-8
+<<< <?xml version='1.0' encoding='utf-8'?>
+<<< <multistatus xmlns="DAV:"><sync-token>http://radicale.org/ns/sync/be68ef9af8b60de5db82e6ea4d3cead8a4af49b09157b09477b348c6f4690f22</sync-token><response><href>/test/probe/a.ics</href><propstat><prop><getetag>"fc9bd7c7003f0543aca1c390653bcc77946500d05f6e4760de3589e3f54efca8"</getetag></prop><status>HTTP/1.1 200 OK</status></propstat></response><response><href>/test/probe/b.ics</href><propstat><prop><getetag>"f0695443e7df86b2bfbc3908ea23de6cbf858b8802d9246dc6f9e911ed77c23d"</getetag></prop><status>HTTP/1.1 200 OK</status></propstat></response><response><href>/test/probe/c.ics</href><propstat><prop><getetag>"e8133c19cc1a81355177bf2f01bee7b1f1ee03d63cfa61d6bef08ddeed802bd3"</getetag></prop><status>HTTP/1.1 200 OK</status></propstat></response></multistatus>
+
+===== 2 create d =====
+>>> PUT /test/probe/d.ics
+>>> Content-Type: text/calendar; charset=utf-8
+>>> BEGIN:VCALENDAR
+
+>>> VERSION:2.0
+
+>>> PRODID:-//calendaring-sync evidence//EN
+
+>>> BEGIN:VEVENT
+
+>>> UID:uid-d
+
+>>> DTSTAMP:20261010T000000Z
+
+>>> DTSTART:20261020T100000Z
+
+>>> DTEND:20261020T110000Z
+
+>>> SUMMARY:d v1
+
+>>> END:VEVENT
+
+>>> END:VCALENDAR
+
+>>> 
+<<< 201 Created
+<<< ETag: "62080b2920049fb171077a2903e12bd2e3fed8955e286cedf4905e437c017e6c"
+
+===== 2 modify a =====
+>>> PUT /test/probe/a.ics
+>>> Content-Type: text/calendar; charset=utf-8
+>>> BEGIN:VCALENDAR
+
+>>> VERSION:2.0
+
+>>> PRODID:-//calendaring-sync evidence//EN
+
+>>> BEGIN:VEVENT
+
+>>> UID:uid-a
+
+>>> DTSTAMP:20261010T000000Z
+
+>>> DTSTART:20261020T100000Z
+
+>>> DTEND:20261020T110000Z
+
+>>> SUMMARY:a v2
+
+>>> END:VEVENT
+
+>>> END:VCALENDAR
+
+>>> 
+<<< 204 No Content
+<<< ETag: "758b90a6fe1f4500a9d29d9f9158fa3d493bafb1fa4f83b9563f9a5aa2c0aec4"
+
+===== 2 delete b =====
+>>> DELETE /test/probe/b.ics
+<<< 200 OK
+<<< Content-Type: text/xml; charset=utf-8
+<<< <?xml version='1.0' encoding='utf-8'?>
+<<< <multistatus xmlns="DAV:"><response><href>/test/probe/b.ics</href><status>HTTP/1.1 200 OK</status></response></multistatus>
+
+===== 2c incremental after create d, modify a, delete b =====
+>>> REPORT /test/probe/
+>>> Depth: 0
+>>> Content-Type: application/xml; charset=utf-8
+>>> <?xml version="1.0" encoding="utf-8"?><D:sync-collection xmlns:D="DAV:"><D:sync-token>http://radicale.org/ns/sync/be68ef9af8b60de5db82e6ea4d3cead8a4af49b09157b09477b348c6f4690f22</D:sync-token><D:sync-level>1</D:sync-level><D:prop><D:getetag/></D:prop></D:sync-collection>
+<<< 207 Multi-Status
+<<< Content-Type: text/xml; charset=utf-8
+<<< <?xml version='1.0' encoding='utf-8'?>
+<<< <multistatus xmlns="DAV:"><sync-token>http://radicale.org/ns/sync/8d9418b3d24c8b8fcc556d4ecfd239b398dff9a3a2e679c3651a9c30cea46670</sync-token><response><href>/test/probe/b.ics</href><status>HTTP/1.1 404 Not Found</status></response><response><href>/test/probe/a.ics</href><propstat><prop><getetag>"758b90a6fe1f4500a9d29d9f9158fa3d493bafb1fa4f83b9563f9a5aa2c0aec4"</getetag></prop><status>HTTP/1.1 200 OK</status></propstat></response><response><href>/test/probe/d.ics</href><propstat><prop><getetag>"62080b2920049fb171077a2903e12bd2e3fed8955e286cedf4905e437c017e6c"</getetag></prop><status>HTTP/1.1 200 OK</status></propstat></response></multistatus>
+
+===== 3 create e =====
+>>> PUT /test/probe/e.ics
+>>> Content-Type: text/calendar; charset=utf-8
+>>> BEGIN:VCALENDAR
+
+>>> VERSION:2.0
+
+>>> PRODID:-//calendaring-sync evidence//EN
+
+>>> BEGIN:VEVENT
+
+>>> UID:uid-e
+
+>>> DTSTAMP:20261010T000000Z
+
+>>> DTSTART:20261020T100000Z
+
+>>> DTEND:20261020T110000Z
+
+>>> SUMMARY:e
+
+>>> END:VEVENT
+
+>>> END:VCALENDAR
+
+>>> 
+<<< 201 Created
+<<< ETag: "522c474fb3e1931d0ee3e08e49af1750e3c8d00acaab7f694a34b5bdf9b2a844"
+
+===== 3 delete e =====
+>>> DELETE /test/probe/e.ics
+<<< 200 OK
+<<< Content-Type: text/xml; charset=utf-8
+<<< <?xml version='1.0' encoding='utf-8'?>
+<<< <multistatus xmlns="DAV:"><response><href>/test/probe/e.ics</href><status>HTTP/1.1 200 OK</status></response></multistatus>
+
+===== 3 report after e was created and deleted =====
+>>> REPORT /test/probe/
+>>> Depth: 0
+>>> Content-Type: application/xml; charset=utf-8
+>>> <?xml version="1.0" encoding="utf-8"?><D:sync-collection xmlns:D="DAV:"><D:sync-token>http://radicale.org/ns/sync/8d9418b3d24c8b8fcc556d4ecfd239b398dff9a3a2e679c3651a9c30cea46670</D:sync-token><D:sync-level>1</D:sync-level><D:prop><D:getetag/></D:prop></D:sync-collection>
+<<< 207 Multi-Status
+<<< Content-Type: text/xml; charset=utf-8
+<<< <?xml version='1.0' encoding='utf-8'?>
+<<< <multistatus xmlns="DAV:"><sync-token>http://radicale.org/ns/sync/879b555c2edb9bfdf854d74ed00af048a2de42404ede648bedb81156ff8bcb3a</sync-token><response><href>/test/probe/e.ics</href><status>HTTP/1.1 404 Not Found</status></response></multistatus>
+
+===== 4 delete c =====
+>>> DELETE /test/probe/c.ics
+<<< 200 OK
+<<< Content-Type: text/xml; charset=utf-8
+<<< <?xml version='1.0' encoding='utf-8'?>
+<<< <multistatus xmlns="DAV:"><response><href>/test/probe/c.ics</href><status>HTTP/1.1 200 OK</status></response></multistatus>
+
+===== 4 re-create c =====
+>>> PUT /test/probe/c.ics
+>>> Content-Type: text/calendar; charset=utf-8
+>>> BEGIN:VCALENDAR
+
+>>> VERSION:2.0
+
+>>> PRODID:-//calendaring-sync evidence//EN
+
+>>> BEGIN:VEVENT
+
+>>> UID:uid-c
+
+>>> DTSTAMP:20261010T000000Z
+
+>>> DTSTART:20261020T100000Z
+
+>>> DTEND:20261020T110000Z
+
+>>> SUMMARY:c v2
+
+>>> END:VEVENT
+
+>>> END:VCALENDAR
+
+>>> 
+<<< 201 Created
+<<< ETag: "0ef2b5126a513c43ff523b96430e8905ff64b9a42c92cf284152367e065a2490"
+
+===== 4 report after c was deleted and re-created =====
+>>> REPORT /test/probe/
+>>> Depth: 0
+>>> Content-Type: application/xml; charset=utf-8
+>>> <?xml version="1.0" encoding="utf-8"?><D:sync-collection xmlns:D="DAV:"><D:sync-token>http://radicale.org/ns/sync/879b555c2edb9bfdf854d74ed00af048a2de42404ede648bedb81156ff8bcb3a</D:sync-token><D:sync-level>1</D:sync-level><D:prop><D:getetag/></D:prop></D:sync-collection>
+<<< 207 Multi-Status
+<<< Content-Type: text/xml; charset=utf-8
+<<< <?xml version='1.0' encoding='utf-8'?>
+<<< <multistatus xmlns="DAV:"><sync-token>http://radicale.org/ns/sync/033312367d87454bbe58be3b96e3a6f8630d70f752c45f7392e16bc5eac0edfa</sync-token><response><href>/test/probe/c.ics</href><propstat><prop><getetag>"0ef2b5126a513c43ff523b96430e8905ff64b9a42c92cf284152367e065a2490"</getetag></prop><status>HTTP/1.1 200 OK</status></propstat></response></multistatus>
+
+===== 5 token: well-formed URI =====
+>>> REPORT /test/probe/
+>>> Depth: 0
+>>> Content-Type: application/xml; charset=utf-8
+>>> <?xml version="1.0" encoding="utf-8"?><D:sync-collection xmlns:D="DAV:"><D:sync-token>http://example.invalid/never-issued</D:sync-token><D:sync-level>1</D:sync-level><D:prop><D:getetag/></D:prop></D:sync-collection>
+<<< 403 Forbidden
+<<< Content-Type: text/xml; charset=utf-8
+<<< <?xml version='1.0' encoding='utf-8'?>
+<<< <error xmlns="DAV:"><valid-sync-token /></error>
+
+===== 5 token: not a URI =====
+>>> REPORT /test/probe/
+>>> Depth: 0
+>>> Content-Type: application/xml; charset=utf-8
+>>> <?xml version="1.0" encoding="utf-8"?><D:sync-collection xmlns:D="DAV:"><D:sync-token>not a uri</D:sync-token><D:sync-level>1</D:sync-level><D:prop><D:getetag/></D:prop></D:sync-collection>
+<<< 403 Forbidden
+<<< Content-Type: text/xml; charset=utf-8
+<<< <?xml version='1.0' encoding='utf-8'?>
+<<< <error xmlns="DAV:"><valid-sync-token /></error>
+
+===== 5 token: real token with two characters replaced =====
+>>> REPORT /test/probe/
+>>> Depth: 0
+>>> Content-Type: application/xml; charset=utf-8
+>>> <?xml version="1.0" encoding="utf-8"?><D:sync-collection xmlns:D="DAV:"><D:sync-token>http://radicale.org/ns/sync/be68ef9af8b60de5db82e6ea4d3cead8a4af49b09157b09477b348c6f4690fzz</D:sync-token><D:sync-level>1</D:sync-level><D:prop><D:getetag/></D:prop></D:sync-collection>
+<<< 403 Forbidden
+<<< Content-Type: text/xml; charset=utf-8
+<<< <?xml version='1.0' encoding='utf-8'?>
+<<< <error xmlns="DAV:"><valid-sync-token /></error>
+
+===== 5 token: real token with its last character changed =====
+>>> REPORT /test/probe/
+>>> Depth: 0
+>>> Content-Type: application/xml; charset=utf-8
+>>> <?xml version="1.0" encoding="utf-8"?><D:sync-collection xmlns:D="DAV:"><D:sync-token>http://radicale.org/ns/sync/be68ef9af8b60de5db82e6ea4d3cead8a4af49b09157b09477b348c6f4690f21</D:sync-token><D:sync-level>1</D:sync-level><D:prop><D:getetag/></D:prop></D:sync-collection>
+<<< 403 Forbidden
+<<< Content-Type: text/xml; charset=utf-8
+<<< <?xml version='1.0' encoding='utf-8'?>
+<<< <error xmlns="DAV:"><valid-sync-token /></error>
+
+===== 6 empty token after deletions =====
+>>> REPORT /test/probe/
+>>> Depth: 0
+>>> Content-Type: application/xml; charset=utf-8
+>>> <?xml version="1.0" encoding="utf-8"?><D:sync-collection xmlns:D="DAV:"><D:sync-token/><D:sync-level>1</D:sync-level><D:prop><D:getetag/></D:prop></D:sync-collection>
+<<< 207 Multi-Status
+<<< Content-Type: text/xml; charset=utf-8
+<<< <?xml version='1.0' encoding='utf-8'?>
+<<< <multistatus xmlns="DAV:"><sync-token>http://radicale.org/ns/sync/033312367d87454bbe58be3b96e3a6f8630d70f752c45f7392e16bc5eac0edfa</sync-token><response><href>/test/probe/b.ics</href><status>HTTP/1.1 404 Not Found</status></response><response><href>/test/probe/e.ics</href><status>HTTP/1.1 404 Not Found</status></response><response><href>/test/probe/a.ics</href><propstat><prop><getetag>"758b90a6fe1f4500a9d29d9f9158fa3d493bafb1fa4f83b9563f9a5aa2c0aec4"</getetag></prop><status>HTTP/1.1 200 OK</status></propstat></response><response><href>/test/probe/c.ics</href><propstat><prop><getetag>"0ef2b5126a513c43ff523b96430e8905ff64b9a42c92cf284152367e065a2490"</getetag></prop><status>HTTP/1.1 200 OK</status></propstat></response><response><href>/test/probe/d.ics</href><propstat><prop><getetag>"62080b2920049fb171077a2903e12bd2e3fed8955e286cedf4905e437c017e6c"</getetag></prop><status>HTTP/1.1 200 OK</status></propstat></response></multistatus>
+
+===== 7 page 0, nresults=2 =====
+>>> REPORT /test/probe/
+>>> Depth: 0
+>>> Content-Type: application/xml; charset=utf-8
+>>> <?xml version="1.0" encoding="utf-8"?><D:sync-collection xmlns:D="DAV:"><D:sync-token>http://radicale.org/ns/sync/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855</D:sync-token><D:sync-level>1</D:sync-level><D:limit><D:nresults>2</D:nresults></D:limit><D:prop><D:getetag/></D:prop></D:sync-collection>
+<<< 207 Multi-Status
+<<< Content-Type: text/xml; charset=utf-8
+<<< <?xml version='1.0' encoding='utf-8'?>
+<<< <multistatus xmlns="DAV:"><sync-token>http://radicale.org/ns/sync/033312367d87454bbe58be3b96e3a6f8630d70f752c45f7392e16bc5eac0edfa</sync-token><response><href>/test/probe/b.ics</href><status>HTTP/1.1 404 Not Found</status></response><response><href>/test/probe/e.ics</href><status>HTTP/1.1 404 Not Found</status></response><response><href>/test/probe/a.ics</href><propstat><prop><getetag>"758b90a6fe1f4500a9d29d9f9158fa3d493bafb1fa4f83b9563f9a5aa2c0aec4"</getetag></prop><status>HTTP/1.1 200 OK</status></propstat></response><response><href>/test/probe/c.ics</href><propstat><prop><getetag>"0ef2b5126a513c43ff523b96430e8905ff64b9a42c92cf284152367e065a2490"</getetag></prop><status>HTTP/1.1 200 OK</status></propstat></response><response><href>/test/probe/d.ics</href><propstat><prop><getetag>"62080b2920049fb171077a2903e12bd2e3fed8955e286cedf4905e437c017e6c"</getetag></prop><status>HTTP/1.1 200 OK</status></propstat></response></multistatus>
+
+===== 7 follow-up from the last page's token =====
+>>> REPORT /test/probe/
+>>> Depth: 0
+>>> Content-Type: application/xml; charset=utf-8
+>>> <?xml version="1.0" encoding="utf-8"?><D:sync-collection xmlns:D="DAV:"><D:sync-token>http://radicale.org/ns/sync/033312367d87454bbe58be3b96e3a6f8630d70f752c45f7392e16bc5eac0edfa</D:sync-token><D:sync-level>1</D:sync-level><D:prop><D:getetag/></D:prop></D:sync-collection>
+<<< 207 Multi-Status
+<<< Content-Type: text/xml; charset=utf-8
+<<< <?xml version='1.0' encoding='utf-8'?>
+<<< <multistatus xmlns="DAV:"><sync-token>http://radicale.org/ns/sync/033312367d87454bbe58be3b96e3a6f8630d70f752c45f7392e16bc5eac0edfa</sync-token></multistatus>
+
+===== 7 live state =====
+>>> REPORT /test/probe/
+>>> Depth: 0
+>>> Content-Type: application/xml; charset=utf-8
+>>> <?xml version="1.0" encoding="utf-8"?><D:sync-collection xmlns:D="DAV:"><D:sync-token/><D:sync-level>1</D:sync-level><D:prop><D:getetag/></D:prop></D:sync-collection>
+<<< 207 Multi-Status
+<<< Content-Type: text/xml; charset=utf-8
+<<< <?xml version='1.0' encoding='utf-8'?>
+<<< <multistatus xmlns="DAV:"><sync-token>http://radicale.org/ns/sync/033312367d87454bbe58be3b96e3a6f8630d70f752c45f7392e16bc5eac0edfa</sync-token><response><href>/test/probe/b.ics</href><status>HTTP/1.1 404 Not Found</status></response><response><href>/test/probe/e.ics</href><status>HTTP/1.1 404 Not Found</status></response><response><href>/test/probe/a.ics</href><propstat><prop><getetag>"758b90a6fe1f4500a9d29d9f9158fa3d493bafb1fa4f83b9563f9a5aa2c0aec4"</getetag></prop><status>HTTP/1.1 200 OK</status></propstat></response><response><href>/test/probe/c.ics</href><propstat><prop><getetag>"0ef2b5126a513c43ff523b96430e8905ff64b9a42c92cf284152367e065a2490"</getetag></prop><status>HTTP/1.1 200 OK</status></propstat></response><response><href>/test/probe/d.ics</href><propstat><prop><getetag>"62080b2920049fb171077a2903e12bd2e3fed8955e286cedf4905e437c017e6c"</getetag></prop><status>HTTP/1.1 200 OK</status></propstat></response></multistatus>
+
+===== 8 GET a =====
+>>> GET /test/probe/a.ics
+<<< 200 OK
+<<< Content-Type: text/calendar; charset=utf-8
+<<< ETag: "758b90a6fe1f4500a9d29d9f9158fa3d493bafb1fa4f83b9563f9a5aa2c0aec4"
+<<< BEGIN:VCALENDAR
+
+<<< VERSION:2.0
+
+<<< PRODID:-//calendaring-sync evidence//EN
+
+<<< BEGIN:VEVENT
+
+<<< UID:uid-a
+
+<<< DTSTART:20261020T100000Z
+
+<<< DTEND:20261020T110000Z
+
+<<< DTSTAMP:20261010T000000Z
+
+<<< SUMMARY:a v2
+
+<<< END:VEVENT
+
+<<< END:VCALENDAR
+
+===== 8 PUT a's stored content back unchanged =====
+>>> PUT /test/probe/a.ics
+>>> Content-Type: text/calendar; charset=utf-8
+>>> BEGIN:VCALENDAR
+
+>>> VERSION:2.0
+
+>>> PRODID:-//calendaring-sync evidence//EN
+
+>>> BEGIN:VEVENT
+
+>>> UID:uid-a
+
+>>> DTSTART:20261020T100000Z
+
+>>> DTEND:20261020T110000Z
+
+>>> DTSTAMP:20261010T000000Z
+
+>>> SUMMARY:a v2
+
+>>> END:VEVENT
+
+>>> END:VCALENDAR
+
+>>> 
+<<< 204 No Content
+<<< ETag: "758b90a6fe1f4500a9d29d9f9158fa3d493bafb1fa4f83b9563f9a5aa2c0aec4"
+
+===== 8 PUT without DTSTAMP =====
+>>> PUT /test/probe/f.ics
+>>> Content-Type: text/calendar; charset=utf-8
+>>> BEGIN:VCALENDAR
+
+>>> VERSION:2.0
+
+>>> PRODID:-//calendaring-sync evidence//EN
+
+>>> BEGIN:VEVENT
+
+>>> UID:uid-f
+
+>>> DTSTART:20261020T100000Z
+
+>>> DTEND:20261020T110000Z
+
+>>> SUMMARY:no DTSTAMP
+
+>>> END:VEVENT
+
+>>> END:VCALENDAR
+
+>>> 
+<<< 201 Created
+<<< ETag: "2ccdd4801180d51bfd357e9087e61446230a68395ff5399b2236d58ca16f41b7"
+
+===== 8 GET f =====
+>>> GET /test/probe/f.ics
+<<< 200 OK
+<<< Content-Type: text/calendar; charset=utf-8
+<<< ETag: "2ccdd4801180d51bfd357e9087e61446230a68395ff5399b2236d58ca16f41b7"
+<<< BEGIN:VCALENDAR
+
+<<< VERSION:2.0
+
+<<< PRODID:-//calendaring-sync evidence//EN
+
+<<< BEGIN:VEVENT
+
+<<< UID:uid-f
+
+<<< DTSTART:20261020T100000Z
+
+<<< DTEND:20261020T110000Z
+
+<<< DTSTAMP:20261010T062248Z
+
+<<< SUMMARY:no DTSTAMP
+
+<<< END:VEVENT
+
+<<< END:VCALENDAR
+
+===== 9 PUT If-Match wrong =====
+>>> PUT /test/probe/a.ics
+>>> Content-Type: text/calendar; charset=utf-8
+>>> If-Match: "wrong"
+>>> BEGIN:VCALENDAR
+
+>>> VERSION:2.0
+
+>>> PRODID:-//calendaring-sync evidence//EN
+
+>>> BEGIN:VEVENT
+
+>>> UID:uid-a
+
+>>> DTSTAMP:20261010T000000Z
+
+>>> DTSTART:20261020T100000Z
+
+>>> DTEND:20261020T110000Z
+
+>>> SUMMARY:a v3
+
+>>> END:VEVENT
+
+>>> END:VCALENDAR
+
+>>> 
+<<< 412 Precondition Failed
+<<< Content-Type: text/plain; charset=utf-8
+<<< Precondition failed.
+
+===== 9 PUT If-Match right =====
+>>> PUT /test/probe/a.ics
+>>> Content-Type: text/calendar; charset=utf-8
+>>> If-Match: "758b90a6fe1f4500a9d29d9f9158fa3d493bafb1fa4f83b9563f9a5aa2c0aec4"
+>>> BEGIN:VCALENDAR
+
+>>> VERSION:2.0
+
+>>> PRODID:-//calendaring-sync evidence//EN
+
+>>> BEGIN:VEVENT
+
+>>> UID:uid-a
+
+>>> DTSTAMP:20261010T000000Z
+
+>>> DTSTART:20261020T100000Z
+
+>>> DTEND:20261020T110000Z
+
+>>> SUMMARY:a v3
+
+>>> END:VEVENT
+
+>>> END:VCALENDAR
+
+>>> 
+<<< 204 No Content
+<<< ETag: "e6a272c3d277f22b3580a70b6904b0a64a959d2ea5a3b631a57c6022f2986816"
+
+===== 9 PUT If-None-Match * on existing =====
+>>> PUT /test/probe/a.ics
+>>> Content-Type: text/calendar; charset=utf-8
+>>> If-None-Match: *
+>>> BEGIN:VCALENDAR
+
+>>> VERSION:2.0
+
+>>> PRODID:-//calendaring-sync evidence//EN
+
+>>> BEGIN:VEVENT
+
+>>> UID:uid-a
+
+>>> DTSTAMP:20261010T000000Z
+
+>>> DTSTART:20261020T100000Z
+
+>>> DTEND:20261020T110000Z
+
+>>> SUMMARY:a v4
+
+>>> END:VEVENT
+
+>>> END:VCALENDAR
+
+>>> 
+<<< 412 Precondition Failed
+<<< Content-Type: text/plain; charset=utf-8
+<<< Precondition failed.
+
+===== 9 PUT If-Match on missing =====
+>>> PUT /test/probe/7143378a-49f4-4b35-8167-d0f0a3bb7790.ics
+>>> Content-Type: text/calendar; charset=utf-8
+>>> If-Match: "x"
+>>> BEGIN:VCALENDAR
+
+>>> VERSION:2.0
+
+>>> PRODID:-//calendaring-sync evidence//EN
+
+>>> BEGIN:VEVENT
+
+>>> UID:uid-h
+
+>>> DTSTAMP:20261010T000000Z
+
+>>> DTSTART:20261020T100000Z
+
+>>> DTEND:20261020T110000Z
+
+>>> SUMMARY:h
+
+>>> END:VEVENT
+
+>>> END:VCALENDAR
+
+>>> 
+<<< 412 Precondition Failed
+<<< Content-Type: text/plain; charset=utf-8
+<<< Precondition failed.
+
+===== 9 create with a UID already used =====
+>>> PUT /test/probe/g.ics
+>>> Content-Type: text/calendar; charset=utf-8
+>>> If-None-Match: *
+>>> BEGIN:VCALENDAR
+
+>>> VERSION:2.0
+
+>>> PRODID:-//calendaring-sync evidence//EN
+
+>>> BEGIN:VEVENT
+
+>>> UID:uid-a
+
+>>> DTSTAMP:20261010T000000Z
+
+>>> DTSTART:20261020T100000Z
+
+>>> DTEND:20261020T110000Z
+
+>>> SUMMARY:dup
+
+>>> END:VEVENT
+
+>>> END:VCALENDAR
+
+>>> 
+<<< 409 Conflict
+<<< Content-Type: text/xml; charset=utf-8
+<<< <?xml version='1.0' encoding='utf-8'?>
+<<< <error xmlns="DAV:" xmlns:C="urn:ietf:params:xml:ns:caldav"><C:no-uid-conflict /></error>
+
+===== 9 DELETE If-Match wrong =====
+>>> DELETE /test/probe/d.ics
+>>> If-Match: "wrong"
+<<< 412 Precondition Failed
+<<< Content-Type: text/plain; charset=utf-8
+<<< Precondition failed.
+
+===== 9 DELETE If-Match right =====
+>>> DELETE /test/probe/d.ics
+>>> If-Match: "62080b2920049fb171077a2903e12bd2e3fed8955e286cedf4905e437c017e6c"
+<<< 200 OK
+<<< Content-Type: text/xml; charset=utf-8
+<<< <?xml version='1.0' encoding='utf-8'?>
+<<< <multistatus xmlns="DAV:"><response><href>/test/probe/d.ics</href><status>HTTP/1.1 200 OK</status></response></multistatus>
+
+===== 9 DELETE If-Match on gone =====
+>>> DELETE /test/probe/d.ics
+>>> If-Match: "62080b2920049fb171077a2903e12bd2e3fed8955e286cedf4905e437c017e6c"
+<<< 404 Not Found
+<<< Content-Type: text/plain; charset=utf-8
+<<< The requested resource could not be found.
+
+===== 10 create with a UUID href =====
+>>> PUT /test/probe/a2166509-9d7f-4c67-b6f7-1582f0df49f4.ics
+>>> Content-Type: text/calendar; charset=utf-8
+>>> If-None-Match: *
+>>> BEGIN:VCALENDAR
+
+>>> VERSION:2.0
+
+>>> PRODID:-//calendaring-sync evidence//EN
+
+>>> BEGIN:VEVENT
+
+>>> UID:a2166509-9d7f-4c67-b6f7-1582f0df49f4.ics
+
+>>> DTSTAMP:20261010T000000Z
+
+>>> DTSTART:20261020T100000Z
+
+>>> DTEND:20261020T110000Z
+
+>>> SUMMARY:round trip
+
+>>> END:VEVENT
+
+>>> END:VCALENDAR
+
+>>> 
+<<< 201 Created
+<<< ETag: "dc5f59fd6fe234f0f44b1cd2c93e2518e05ba3bd82c4594ecaf005bed32c0861"
+
+===== 10 report after the UUID create =====
+>>> REPORT /test/probe/
+>>> Depth: 0
+>>> Content-Type: application/xml; charset=utf-8
+>>> <?xml version="1.0" encoding="utf-8"?><D:sync-collection xmlns:D="DAV:"><D:sync-token>http://radicale.org/ns/sync/033312367d87454bbe58be3b96e3a6f8630d70f752c45f7392e16bc5eac0edfa</D:sync-token><D:sync-level>1</D:sync-level><D:prop><D:getetag/></D:prop></D:sync-collection>
+<<< 207 Multi-Status
+<<< Content-Type: text/xml; charset=utf-8
+<<< <?xml version='1.0' encoding='utf-8'?>
+<<< <multistatus xmlns="DAV:"><sync-token>http://radicale.org/ns/sync/01c48a7018c3fd62677245fed9a38bd49823d1a732c279a93d42a75c29d320e7</sync-token><response><href>/test/probe/d.ics</href><status>HTTP/1.1 404 Not Found</status></response><response><href>/test/probe/a.ics</href><propstat><prop><getetag>"e6a272c3d277f22b3580a70b6904b0a64a959d2ea5a3b631a57c6022f2986816"</getetag></prop><status>HTTP/1.1 200 OK</status></propstat></response><response><href>/test/probe/a2166509-9d7f-4c67-b6f7-1582f0df49f4.ics</href><propstat><prop><getetag>"dc5f59fd6fe234f0f44b1cd2c93e2518e05ba3bd82c4594ecaf005bed32c0861"</getetag></prop><status>HTTP/1.1 200 OK</status></propstat></response><response><href>/test/probe/f.ics</href><propstat><prop><getetag>"2ccdd4801180d51bfd357e9087e61446230a68395ff5399b2236d58ca16f41b7"</getetag></prop><status>HTTP/1.1 200 OK</status></propstat></response></multistatus>
+
+===== 11 create keep =====
+>>> PUT /test/probe/keep.ics
+>>> Content-Type: text/calendar; charset=utf-8
+>>> BEGIN:VCALENDAR
+
+>>> VERSION:2.0
+
+>>> PRODID:-//calendaring-sync evidence//EN
+
+>>> BEGIN:VEVENT
+
+>>> UID:keep
+
+>>> DTSTAMP:20261010T000000Z
+
+>>> DTSTART:20261020T100000Z
+
+>>> DTEND:20261020T110000Z
+
+>>> SUMMARY:v1
+
+>>> END:VEVENT
+
+>>> END:VCALENDAR
+
+>>> 
+<<< 201 Created
+<<< ETag: "335e9927abd859a8886857c4730401d1e13bba77da32ced21408b7e376a3892a"
+
+===== 11 create gone =====
+>>> PUT /test/probe/gone.ics
+>>> Content-Type: text/calendar; charset=utf-8
+>>> BEGIN:VCALENDAR
+
+>>> VERSION:2.0
+
+>>> PRODID:-//calendaring-sync evidence//EN
+
+>>> BEGIN:VEVENT
+
+>>> UID:gone
+
+>>> DTSTAMP:20261010T000000Z
+
+>>> DTSTART:20261020T100000Z
+
+>>> DTEND:20261020T110000Z
+
+>>> SUMMARY:v1
+
+>>> END:VEVENT
+
+>>> END:VCALENDAR
+
+>>> 
+<<< 201 Created
+<<< ETag: "331bc4f915097c438f01019a3a938516143f87642e8f516a30781730cb2b4e69"
+
+===== 11 report =====
+>>> REPORT /test/probe/
+>>> Depth: 0
+>>> Content-Type: application/xml; charset=utf-8
+>>> <?xml version="1.0" encoding="utf-8"?><D:sync-collection xmlns:D="DAV:"><D:sync-token>http://radicale.org/ns/sync/01c48a7018c3fd62677245fed9a38bd49823d1a732c279a93d42a75c29d320e7</D:sync-token><D:sync-level>1</D:sync-level><D:prop><D:getetag/></D:prop></D:sync-collection>
+<<< 207 Multi-Status
+<<< Content-Type: text/xml; charset=utf-8
+<<< <?xml version='1.0' encoding='utf-8'?>
+<<< <multistatus xmlns="DAV:"><sync-token>http://radicale.org/ns/sync/49d3ee712522d8c3baf985069ac75301588a0496e65c59b89c11d7daad108c2f</sync-token><response><href>/test/probe/gone.ics</href><propstat><prop><getetag>"331bc4f915097c438f01019a3a938516143f87642e8f516a30781730cb2b4e69"</getetag></prop><status>HTTP/1.1 200 OK</status></propstat></response><response><href>/test/probe/keep.ics</href><propstat><prop><getetag>"335e9927abd859a8886857c4730401d1e13bba77da32ced21408b7e376a3892a"</getetag></prop><status>HTTP/1.1 200 OK</status></propstat></response></multistatus>
+
+===== 11 change keep after the report =====
+>>> PUT /test/probe/keep.ics
+>>> Content-Type: text/calendar; charset=utf-8
+>>> BEGIN:VCALENDAR
+
+>>> VERSION:2.0
+
+>>> PRODID:-//calendaring-sync evidence//EN
+
+>>> BEGIN:VEVENT
+
+>>> UID:keep
+
+>>> DTSTAMP:20261010T000000Z
+
+>>> DTSTART:20261020T100000Z
+
+>>> DTEND:20261020T110000Z
+
+>>> SUMMARY:v2 changed after the report
+
+>>> END:VEVENT
+
+>>> END:VCALENDAR
+
+>>> 
+<<< 204 No Content
+<<< ETag: "44fb227061452749926cc7d1d4fb1a5c9e98c946497ea8bdff82d755901fd69d"
+
+===== 11 delete gone after the report =====
+>>> DELETE /test/probe/gone.ics
+<<< 200 OK
+<<< Content-Type: text/xml; charset=utf-8
+<<< <?xml version='1.0' encoding='utf-8'?>
+<<< <multistatus xmlns="DAV:"><response><href>/test/probe/gone.ics</href><status>HTTP/1.1 200 OK</status></response></multistatus>
+
+===== 11 calendar-multiget, no Depth header =====
+>>> REPORT /test/probe/
+>>> Content-Type: application/xml; charset=utf-8
+>>> <?xml version="1.0" encoding="utf-8"?><C:calendar-multiget xmlns:D="DAV:" xmlns:C="urn:ietf:params:xml:ns:caldav"><D:prop><D:getetag/><C:calendar-data/></D:prop><D:href>/test/probe/keep.ics</D:href><D:href>/test/probe/gone.ics</D:href></C:calendar-multiget>
+<<< 207 Multi-Status
+<<< Content-Type: text/xml; charset=utf-8
+<<< <?xml version='1.0' encoding='utf-8'?>
+<<< <multistatus xmlns="DAV:" xmlns:C="urn:ietf:params:xml:ns:caldav"><response><href>/test/probe/gone.ics</href><status>HTTP/1.1 404 Not Found</status></response><response><href>/test/probe/keep.ics</href><propstat><prop><getetag>"44fb227061452749926cc7d1d4fb1a5c9e98c946497ea8bdff82d755901fd69d"</getetag><C:calendar-data>BEGIN:VCALENDAR
+
+<<< VERSION:2.0
+
+<<< PRODID:-//calendaring-sync evidence//EN
+
+<<< BEGIN:VEVENT
+
+<<< UID:keep
+
+<<< DTSTART:20261020T100000Z
+
+<<< DTEND:20261020T110000Z
+
+<<< DTSTAMP:20261010T000000Z
+
+<<< SUMMARY:v2 changed after the report
+
+<<< END:VEVENT
+
+<<< END:VCALENDAR
+
+<<< </C:calendar-data></prop><status>HTTP/1.1 200 OK</status></propstat></response></multistatus>
+
+===== 11 next report =====
+>>> REPORT /test/probe/
+>>> Depth: 0
+>>> Content-Type: application/xml; charset=utf-8
+>>> <?xml version="1.0" encoding="utf-8"?><D:sync-collection xmlns:D="DAV:"><D:sync-token>http://radicale.org/ns/sync/49d3ee712522d8c3baf985069ac75301588a0496e65c59b89c11d7daad108c2f</D:sync-token><D:sync-level>1</D:sync-level><D:prop><D:getetag/></D:prop></D:sync-collection>
+<<< 207 Multi-Status
+<<< Content-Type: text/xml; charset=utf-8
+<<< <?xml version='1.0' encoding='utf-8'?>
+<<< <multistatus xmlns="DAV:"><sync-token>http://radicale.org/ns/sync/be410405fa5b2a33f9a3d67aae210431d629512f3e1eb3263fa40d76d5d40aeb</sync-token><response><href>/test/probe/gone.ics</href><status>HTTP/1.1 404 Not Found</status></response><response><href>/test/probe/keep.ics</href><propstat><prop><getetag>"44fb227061452749926cc7d1d4fb1a5c9e98c946497ea8bdff82d755901fd69d"</getetag></prop><status>HTTP/1.1 200 OK</status></propstat></response></multistatus>
+
+RESULT [Radicale] 1 sync-collection in supported-report-set: True; ['calendar-multiget', 'calendar-query', 'expand-property', 'free-busy-query', 'principal-property-search', 'principal-search-property-set', 'sync-collection']
+RESULT [Radicale] 2 initial listing: [('a.ics', '200'), ('b.ics', '200'), ('c.ics', '200')]
+RESULT [Radicale] 2 incremental: [('b.ics', '404'), ('a.ics', '200'), ('d.ics', '200')]
+RESULT [Radicale] 3 created and deleted between reports: [('e.ics', '404')]: reported as removed
+RESULT [Radicale] 4 deleted and re-created: entries for c.ics: ['200']
+RESULT [Radicale] 5 token well-formed URI: 403, valid-sync-token: True, members []
+RESULT [Radicale] 5 token not a URI: 403, valid-sync-token: True, members []
+RESULT [Radicale] 5 token real token with two characters replaced: 403, valid-sync-token: True, members []
+RESULT [Radicale] 5 token real token with its last character changed: 403, valid-sync-token: True, members []
+RESULT [Radicale] 6 empty token after deletions: removed members listed: [('b.ics', '404'), ('e.ics', '404')]; collection listed: False
+RESULT [Radicale] 7 DAV:limit: 507 sent: False; pages 1; paged + follow-up equals live: True; missing []
+RESULT [Radicale] 8 identical PUT: ETag unchanged: True
+RESULT [Radicale] 8 PUT stored differently: stored equals sent: False; ETag in the PUT answer: "2ccdd4801180d51bfd357e9087e61446230a68395ff5399b2236d58ca16f41b7"
+RESULT [Radicale] 9 PUT If-Match wrong: 412
+RESULT [Radicale] 9 PUT If-Match right: 204
+RESULT [Radicale] 9 PUT If-None-Match * on existing: 412
+RESULT [Radicale] 9 PUT If-Match on missing: 412
+RESULT [Radicale] 9 duplicate UID: 409, element ['no-uid-conflict']
+RESULT [Radicale] 9 DELETE If-Match wrong: 412
+RESULT [Radicale] 9 DELETE If-Match right: 200
+RESULT [Radicale] 9 DELETE If-Match on gone: 404
+RESULT [Radicale] PASS 10 unreserved href round-trips in the sync report: ok
+RESULT [Radicale] PASS 11 multiget is 207: 207
+RESULT [Radicale] PASS 11 multiget returns the newer ETag with the newer content: report-time "335e9927abd859a8886857c4730401d1e13bba77da32ced21408b7e376a3892a", fetched "44fb227061452749926cc7d1d4fb1a5c9e98c946497ea8bdff82d755901fd69d", live "44fb227061452749926cc7d1d4fb1a5c9e98c946497ea8bdff82d755901fd69d"
+RESULT [Radicale] 11 multiget for a member deleted after the report: entry with status ['404']
+RESULT [Radicale] PASS 11 the removal arrives in the next report: ok

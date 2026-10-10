@@ -1,0 +1,11 @@
+
+RESULT [Cyrus] python-caldav version: 3.4.0
+RESULT [Cyrus] unknown token, get_objects_by_sync_token(disable_fallback=True): raised AuthorizationError {'url': 'http://localhost:8802/dav/calendars/user/user1/client/', 'reason': 'Forbidden'}
+RESULT [Cyrus] unknown token, DAVClient.report(): raised AuthorizationError {'url': 'http://localhost:8802/dav/calendars/user/user1/client/', 'reason': 'Forbidden'}
+RESULT [Cyrus] unknown token, default fallback: returned ('fake-d41d8cd98f00b204e9800998ecf8427e', 0)
+RESULT [Cyrus] a removed member as returned: (href, getetag, data is None): [('client-removed.ics', None, True)]
+RESULT [Cyrus] DAV:limit 1 through DAVClient.report(): status 207, 507 present: True, token data:,1791613476-81-85
+RESULT [Cyrus] real 507 page, get_objects_by_sync_token(disable_fallback=True): raised ResponseError {'url': 'HTTP/1.1 507 Insufficient Storage'}
+RESULT [Cyrus] real 507 page, default fallback: returned ('fake-6ee587fa20a26ed7292c252ea5578c01', 3)
+RESULT [Cyrus] real 507 page, DAVResponse.parse_sync_collection(): raised ResponseError {'url': 'HTTP/1.1 507 Insufficient Storage'}
+RESULT [Cyrus] calendar-multiget through DAVClient.report(depth=None), no Depth header: status 207, entries 2 for 2 hrefs
