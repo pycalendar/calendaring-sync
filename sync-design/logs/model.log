@@ -1,0 +1,69 @@
+== Why conflicts are reported, not resolved: every class
+PASS UNCHANGED version-only
+PASS REMOTE_ONLY update
+PASS REMOTE_ONLY create
+PASS DELETED_REMOTE
+PASS LOCAL_ONLY
+PASS DELETED_LOCAL
+PASS CONFLICT both modified
+PASS CONFLICT local delete against remote edit
+PASS CONFLICT remote removed against local edit
+PASS DELETED_REMOTE both deleted
+PASS UNCHANGED both sides equal
+PASS CONFLICT both created at a reserved id before sending
+== Why a sync reads before it writes: sessions
+PASS push refused while paging
+PASS ingest after push refused
+PASS another scope ingests independently while this one pushes
+PASS applied push: version cleared, synced
+PASS own write comes back rewritten: stored, no conflict
+== Why a sync reads before it writes: push claims and a crash with an edit in flight
+PASS second process loses the claim on the same edit
+PASS after reopen the in-flight edit is unknown
+PASS unknown edit never mentioned: pending again
+PASS unknown edit that landed is settled by the next ingest
+== Why a sync reads before it writes: unknown outcomes
+PASS in-flight update back different: both modified
+PASS in-flight delete back removed: applied
+PASS in-flight create recovered by logical key despite rewrite
+PASS in-flight create recovered by reserved id despite rewrite
+PASS create then delete before sending removes it
+PASS edit back to synced content cancels
+== Why the server's answer to a write isn't trusted: rejections
+PASS scope-wide rejection, object unchanged: pending, no conflict
+PASS pushed again and applied
+PASS rejection with the object changed remotely: both modified
+== Why conflicts are reported, not resolved: refresh and resolve_conflicts
+PASS edit refused on open conflict
+PASS conflict refreshes its remote side
+PASS conflict resolves itself when remote equals local
+PASS resolver exception propagates
+PASS earlier resolution kept, based on the remote version
+PASS record that raised stays open
+PASS None leaves a record open
+PASS keep remote marks synced with the remote content
+PASS resolution then another remote change: classified against the new base
+== Create collisions, and why identity isn't the calendar UID
+PASS create collision resolved by discard: local create gone
+PASS create collision resolved by update colliding: colliding object gets the edit
+PASS create collision resolved by merged: fresh create with new content
+PASS keep local isn't offered for a create collision
+PASS logical-key lookup returns every match
+== Why a change set is applied all at once, and why an invalid token is routine
+PASS listing page leaves the token alone
+PASS removal of an unknown id inside a listing is a no-op
+PASS final page infers the unmentioned removal
+PASS reconciling listing repairs a lost removal
+PASS reconciling listing repairs a lost edit
+PASS last listing time recorded
+PASS stale change set refused, token unchanged
+== Timestamps, why a removed scope is yours to drop, and two processes on one store
+PASS timestamps come from the injected clock
+PASS a truncated page leaves last_synced alone
+PASS drop_scope reports the pending edit it discards
+PASS second handle with the old token is refused
+PASS store holds the first writer's result only
+== Why an object has five states
+PASS synced, pending, in flight, conflict and removed all reached
+
+57 of 57 passed

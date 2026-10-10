@@ -1,0 +1,11 @@
+
+RESULT [Stalwart] python-caldav version: 3.4.0
+RESULT [Stalwart] unknown token, get_objects_by_sync_token(disable_fallback=True): returned ('urn:stalwart:davsync:15', 0)
+RESULT [Stalwart] unknown token, DAVClient.report(): returned 207
+RESULT [Stalwart] unknown token, default fallback: returned ('urn:stalwart:davsync:15', 0)
+RESULT [Stalwart] a removed member as returned: (href, getetag, data is None): [('client-removed.ics', None, True)]
+RESULT [Stalwart] DAV:limit 1 through DAVClient.report(): status 207, 507 present: True, token urn:stalwart:davsync:1a
+RESULT [Stalwart] real 507 page, get_objects_by_sync_token(disable_fallback=True): raised ResponseError {'url': 'HTTP/1.1 507 Insufficient Storage'}
+RESULT [Stalwart] real 507 page, default fallback: returned ('fake-b0283bd19c197890f38bbb27468e01c7', 3)
+RESULT [Stalwart] real 507 page, DAVResponse.parse_sync_collection(): raised ResponseError {'url': 'HTTP/1.1 507 Insufficient Storage'}
+RESULT [Stalwart] calendar-multiget through DAVClient.report(depth=None), no Depth header: status 207, entries 2 for 2 hrefs

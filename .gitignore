@@ -1,0 +1,8 @@
+# SPDX-FileCopyrightText: 2026 calendaring-sync contributors
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+# Tooling output, for every evidence set. Each set ignores its own run artifacts in its folder.
+__pycache__/
+*.py[cod]
+.ruff_cache/
+.venv/

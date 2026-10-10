@@ -1,0 +1,3 @@
+
+RESULT [Radicale] retry rule, user test: expired token: AuthorizationError Forbidden; retry with an empty token: 207
+RESULT [Radicale] retry rule, user intruder: expired token: AuthorizationError Forbidden; retry with an empty token: AuthorizationError Forbidden
