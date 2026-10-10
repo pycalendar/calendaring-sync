@@ -7,8 +7,8 @@ import datetime
 import os
 
 project = "calendaring-sync"
-this_year = datetime.date.today().year
-copyright = f"{this_year}, calendaring-sync contributors"
+this_year = datetime.date.today().year  # noqa: DTZ011
+copyright = f"{this_year}, calendaring-sync contributors"  # noqa: A001
 author = "calendaring-sync contributors"
 
 extensions = [
@@ -19,6 +19,7 @@ extensions = [
     "sphinx.ext.intersphinx",
     "sphinx_copybutton",
     "sphinx_design",
+    "sphinx_issues",
     "sphinx_last_updated_by_git",
     "sphinxext.opengraph",
 ]
@@ -35,6 +36,9 @@ ogp_social_cards = {
     "line_color": "#0f766e",
     "background_color": "#f8f7f4",
 }
+
+# sphinx_issues configuration: enables :issue:`N`, :pr:`N`, :user:`name` roles
+issues_github_path = "pycalendar/calendaring-sync"
 
 html_theme = "pydata_sphinx_theme"
 html_theme_options = {
