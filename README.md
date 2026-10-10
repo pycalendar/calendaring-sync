@@ -8,6 +8,8 @@ Calendar sync state: sync tokens, object versions, change tracking, and conflict
 Part of the [Python Calendaring Ecosystem](https://pycal.org).
 
 [![Documentation](https://readthedocs.org/projects/calendaring-sync/badge/?version=latest)](https://calendaring-sync.readthedocs.io/en/latest/)
+[![Tests](https://github.com/pycalendar/calendaring-sync/actions/workflows/tests.yml/badge.svg)](https://github.com/pycalendar/calendaring-sync/actions/workflows/tests.yml)
+[![codecov](https://codecov.io/gh/pycalendar/calendaring-sync/branch/main/graph/badge.svg)](https://codecov.io/gh/pycalendar/calendaring-sync)
 [![REUSE status](https://api.reuse.software/badge/github.com/pycalendar/calendaring-sync)](https://api.reuse.software/info/github.com/pycalendar/calendaring-sync)
 [![License: AGPL-3.0-or-later](https://img.shields.io/badge/License-AGPL%203.0--or--later-blue.svg)](LICENSE)
 [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
