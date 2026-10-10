@@ -51,3 +51,4 @@ A Python library for calendar sync state: sync tokens, object versions, change t
    explanation/index
    contribute
    security
+   release
