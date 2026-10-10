@@ -17,6 +17,7 @@ Development setup
     git clone https://github.com/pycalendar/calendaring-sync
     cd calendaring-sync
     pip install -e ".[dev]"
+    pre-commit install
 
 Running tests
 =============
@@ -49,7 +50,7 @@ Checking docs prose with Vale
     vale sync
     vale docs/
 
-This catches a real subset of :ref:`writing-documentation`'s rules mechanically, but it isn't a substitute for reading your own diff.
+CI runs this the same way, as a warn-only check (a failure doesn't block a PR yet): it catches a real subset of :ref:`writing-documentation`'s rules mechanically, but it isn't a substitute for reading your own diff.
 
 .. _artificial-intelligence-policy:
 
@@ -69,7 +70,7 @@ Keep each commit to one concern. A PR that both fixes a bug and refactors an unr
 
 Write the PR description in your own words, as a short account of what you found and did, not a restatement of the linked issue's own text back at its author, and not a bullet-by-bullet checklist. If the work turned up real bugs along the way, describe the fix; don't frame the PR as "here's how many bugs I found," even when true, that framing reads as padding a body's length rather than reporting the work.
 
-Before opening a PR, run the unit tests, ``ruff check`` and ``ruff format --check``, ``mypy src/calendaring_sync --ignore-missing-imports``, and ``reuse lint``. If you touched any ``.rst`` page, also run :ref:`vale-check` and build the docs with ``sphinx-build -W -b html docs docs/_build/html``, which turns every Sphinx warning into an error so a broken cross-reference or role fails there instead of shipping. Fix everything that comes back before asking for review, rather than leaving a known-red check for the reviewer to raise.
+Before opening a PR, run the unit tests, ``ruff check`` and ``ruff format --check``, ``mypy src/calendaring_sync --ignore-missing-imports``, and ``reuse lint``. If you touched any ``.rst`` page, also run :ref:`vale-check` and build the docs with ``sphinx-build -W -b html docs docs/_build/html``. Fix everything that comes back before asking for review, rather than leaving a known-red check for the reviewer to raise. Vale runs warn-only in CI for now, so it won't block the PR on its own, but treat its findings the same as the others. CI also builds the docs with Sphinx's warnings-as-errors flag, so a broken cross-reference or ``automodule`` directive fails the PR there rather than silently deploying a broken page to Read the Docs.
 
 .. _change-log:
 
@@ -84,7 +85,7 @@ If your PR changes behavior, add a news fragment. CI-only and internal-refactor 
 
 Where ``<type>`` is one of: ``breaking``, ``removal``, ``feature``, ``bugfix``, ``documentation``, ``deps``, ``internal``, ``chore``, ``security``.
 
-Write a short, user-facing description of the change inside the file: state what changed and, if it's a fix, what happened before. The issue link is generated automatically from the filename's number, so don't add one yourself. If your PR isn't tied to an issue, prefix the filename with ``+`` instead of a number (for example ``+resync-after-invalid-token.bugfix.rst``); towncrier accepts orphan fragments this way and just omits the issue link. Fragments are collected into ``docs/changelog.rst`` at release time. Don't edit that file directly.
+Write a short, user-facing description of the change inside the file: state what changed and, if it's a fix, what happened before. The issue link is generated automatically from the filename's number, so don't add one yourself. If your PR isn't tied to an issue, prefix the filename with ``+`` instead of a number (for example ``+resync-after-invalid-token.bugfix.rst``); towncrier accepts orphan fragments this way and just omits the issue link. Fragments are collected into ``docs/changelog.rst`` at release time. Don't edit that file directly. See :doc:`release` for the maintainer-only steps that actually cut a release.
 
 Keep each fragment to one or two sentences. State the change; don't explain how it works internally, why it was needed, or how it was found, that belongs in the PR description, not the changelog. If your PR touches more than one distinct behavior (two separate bugs, or a feature plus an unrelated parameter addition), write one fragment per behavior (``11.feature.1.rst``, ``11.feature.2.rst``, and further numbered fragments as needed) instead of one fragment covering all of them. See any ``bugfix`` fragment in ``news/`` for the length and tone to aim for.
 
@@ -157,7 +158,7 @@ Prose style for pages
 
     Spell these terms consistently: GitHub, add-on (not ``addon``), plug-in (not ``plugin``), reST or reStructuredText (not RST, except as the file extension or in a code span like ``.rst``).
 
-    :ref:`vale-check` runs the Microsoft Vale style package plus `signs-of-ai-writing <https://github.com/ammil-industries/vale-signs-of-ai-writing>`_ (patterns from Wikipedia's `Signs of AI writing <https://en.wikipedia.org/wiki/Wikipedia:Signs_of_AI_writing>`_ essay), catching a real subset of these rules mechanically: contractions, passive voice, dash spacing, sentence-case headings, hedging clusters, chatbot phrases, and the AI-typical vocabulary and symbolic-language patterns the essay documents. It doesn't catch everything: the Diataxis category choice and whether a how-to page pushed "why" content where it belongs still need a reviewer's judgment.
+    :ref:`vale-check` runs the Microsoft Vale style package plus `signs-of-ai-writing <https://github.com/ammil-industries/vale-signs-of-ai-writing>`_ (patterns from Wikipedia's `Signs of AI writing <https://en.wikipedia.org/wiki/Wikipedia:Signs_of_AI_writing>`_ essay) in CI, catching a real subset of these rules mechanically: contractions, passive voice, dash spacing, sentence-case headings, hedging clusters, chatbot phrases, and the AI-typical vocabulary and symbolic-language patterns the essay documents. It doesn't catch everything: the Diataxis category choice and whether a how-to page pushed "why" content where it belongs still need a reviewer's judgment.
 
 Cross-referencing and code examples
     Link between pages with ``:doc:`` and an explicit relative path (``:doc:`../explanation/design```). Reference a class or method with ``:class:`` or ``:meth:`` and a leading ``~`` for a short display name. Cite an RFC the same way :ref:`code-style`'s "RFC citations" rule describes for docstrings, merging the section into the role.
